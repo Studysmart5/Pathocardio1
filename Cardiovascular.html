@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Smart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#faf7fb;--card:#fff;--ink:#241a2e;--mut:#6b6275;--p:#5b2a86;--s:#d6336c;--ln:#e4dcea;--ok:#1f8a4c;--bad:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:28px 18px 8px;max-width:960px;margin:auto}
+h1{font:700 clamp(2rem,6vw,3.2rem)/1 Georgia,serif;margin:0;color:var(--p);letter-spacing:-.02em}
+header p{margin:6px 0 0;color:var(--mut)}
+nav{display:flex;gap:6px;overflow-x:auto;max-width:960px;margin:14px auto;padding:0 18px}
+nav button{flex:none;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);padding:9px 15px;border-radius:99px;font:600 .9rem inherit;cursor:pointer}
+nav button[aria-selected=true]{background:var(--p);border-color:var(--p);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+main{max-width:960px;margin:auto;padding:0 18px 30px}
+section{display:none}section.on{display:block}
+h2{font:700 1.5rem Georgia,serif;margin:8px 0 12px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:16px;margin-bottom:12px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.grid .card{margin:0;border-left:5px solid var(--s)}
+.grid b{color:var(--p)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1.5px solid var(--ln);background:var(--card);color:var(--ink);border-radius:99px;padding:5px 12px;cursor:pointer;font:.85rem inherit}
+.chip.on{background:var(--s);border-color:var(--s);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+.sc{overflow-x:auto}
+td,th{padding:9px 8px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+th{color:var(--p)}
+td:first-child{font-weight:700;white-space:nowrap}
+.tree{display:flex;flex-direction:column;align-items:center;gap:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.node{border:2px solid var(--p);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer;font:600 .95rem inherit}
+.node.on{background:var(--p);color:#fff}
+.note{background:var(--bg);border:1px dashed var(--p);border-radius:10px;padding:12px;margin-top:10px;min-height:48px}
+.tl{display:flex;overflow-x:auto;gap:0;padding:10px 0;border-top:3px solid var(--p);margin-top:10px}
+.tl button{flex:1 0 130px;background:none;border:0;color:var(--ink);cursor:pointer;padding:12px 6px 0;position:relative;font:.85rem inherit}
+.tl button:before{content:"";position:absolute;top:-17px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--s);border:3px solid var(--bg)}
+.tl button.on{font-weight:700;color:var(--p)}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps button{flex:1 0 130px;padding:12px;border:2px solid var(--ln);background:var(--card);color:var(--ink);cursor:pointer;border-radius:10px;font:inherit}
+.steps button.on{border-color:var(--s);background:var(--s);color:#fff}
+.map{display:grid;grid-template-columns:240px 1fr;gap:14px}
+.list{max-height:60vh;overflow:auto;display:flex;flex-direction:column;gap:3px}
+.list h4{margin:10px 0 2px;color:var(--p);font-size:.85rem}
+.list button{text-align:left;border:0;background:none;color:var(--ink);padding:6px 8px;border-radius:7px;cursor:pointer;font:.92rem inherit}
+.list button.on{background:var(--p);color:#fff}
+.view{position:sticky;top:8px;align-self:start;min-height:140px}
+.view h3{margin:0 0 6px;color:var(--s);font:700 1.3rem Georgia,serif}
+@media(max-width:640px){.map{grid-template-columns:1fr}.view{order:-1}.list{max-height:34vh}}
+.fc{perspective:900px;height:220px;cursor:pointer;margin:10px 0}
+.fi{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.f .fi{transform:rotateY(180deg)}
+.fa,.fb{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-size:1.15rem;overflow:auto}
+.fa{background:var(--p);color:#fff;font:700 1.4rem Georgia,serif}
+.fb{background:var(--card);border:2px solid var(--s);transform:rotateY(180deg)}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:0;background:var(--p);color:#fff;padding:10px 18px;border-radius:10px;font:600 .95rem inherit;cursor:pointer}
+.btn.g{background:var(--card);color:var(--ink);border:1.5px solid var(--ln)}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;padding:11px 14px;border:1.5px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--card))}
+.prog{height:6px;background:var(--ln);border-radius:9px;overflow:hidden;margin-bottom:10px}.prog i{display:block;height:100%;background:var(--s);width:0;transition:width .3s}
+input[type=search]{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+footer{text-align:center;color:var(--mut);padding:20px;font-size:.85rem;border-top:1px solid var(--ln);max-width:960px;margin:auto}
+@media(prefers-reduced-motion:reduce){.fi{transition:none}}
+.mmbar{display:flex;gap:6px;margin-bottom:8px}.mm ul{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--ln)}.mm>ul{padding-left:0;border:0}.mm li{margin:4px 0}.mm .nb{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);border-radius:9px;padding:7px 10px;font:600 .93rem inherit;cursor:pointer}.mm .nb.p{border-color:var(--p)}.mm .nb .ar{flex:none;width:1em;color:var(--s);transition:transform .15s}.mm li.open>.nb .ar{transform:rotate(90deg)}.mm .l1>.nb{background:var(--p);color:#fff;border-color:var(--p)}.mm .l1>.nb .ar{color:#fff}.mm .l2>.nb{border-color:var(--p);font-size:1rem}.mm .rel{font:600 .68rem inherit;color:var(--s);background:var(--bg);border-radius:99px;padding:1px 8px;margin-left:auto;white-space:nowrap}.mm .l1>.nb .rel{background:#fff3}.mm .dt{font:400 .85rem inherit;color:var(--mut);margin:2px 0 0 10px}.mm li:not(.open)>ul{display:none}.mm .lf>.nb{cursor:default;font-weight:500}.mmh{font:700 1.1rem Georgia,serif;margin:16px 0 8px;color:var(--p)}#mr div{padding:5px 0;border-bottom:1px solid var(--ln);font-size:.92rem}#mr div:last-child{border:0}#mr b{color:var(--p)}#mr i{color:var(--s);font-style:normal;font-weight:700}
+.fc{height:clamp(320px,62vh,460px)}.fa{font:700 1.15rem/1.4 Georgia,serif}.fb{display:block;text-align:left;font-size:.95rem}.fb .tg{font:700 .72rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--s);margin-top:8px}.fb .tg:first-child{margin-top:0}.bt{white-space:pre-line}.bt.ex{color:var(--mut)}.fa{white-space:pre-line}
+.qsum{margin-top:16px;border-collapse:collapse;width:100%;max-width:320px}.qsum th,.qsum td{border:1px solid var(--ln);padding:6px 10px;text-align:left}
+</style><style>
+:root{--bg:#f1e6e0;--card:#fff;--ink:#2b1416;--mut:#7a5a5c;--p:#7a1527;--s:#c8452f;--ln:#e6d0cb;--ok:#1d7a45;--bad:#b3261e}
+body{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.6}
+header{max-width:960px;border-bottom:3px double var(--p);padding-bottom:14px;margin-bottom:0}
+h1{font-size:clamp(2rem,6vw,2.8rem);letter-spacing:0}
+header p{font-style:italic}
+nav{gap:0;border-bottom:1px solid var(--ln);margin:0 auto 18px;padding:0 18px;max-width:960px}
+nav button{border:0;border-bottom:3px solid transparent;border-radius:0;background:none;color:var(--mut);padding:12px 16px;font-family:inherit;font-size:.95rem}
+nav button[aria-selected=true]{background:none;color:var(--p);border-bottom-color:var(--s)}
+h2{font-size:1.6rem;color:var(--p);border-bottom:1px solid var(--ln);padding-bottom:6px;margin-bottom:16px}
+.card,.note,.node,.chip,.opt,.btn,.steps button,input[type=search]{border-radius:4px}
+.card{box-shadow:0 1px 0 var(--ln)}
+.grid .card{border-left:4px solid var(--p);counter-increment:r}
+.grid .card:before{content:"Key point " counter(r);display:block;font:700 .78rem system-ui,sans-serif;color:var(--s);margin-bottom:3px}
+.grid{counter-reset:r}
+.grid .card b{display:none}
+th{background:var(--p);color:#fff;font-family:system-ui,sans-serif;font-size:.85rem}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--p) 4%,var(--card))}
+td:first-child{color:var(--p)}
+.chip.on{background:var(--p);border-color:var(--p)}
+.node.on,.steps button.on{background:var(--p);border-color:var(--p)}
+.note{border:1px solid var(--ln);border-left:4px solid var(--s);background:var(--card)}
+.tl button:before{background:var(--s);border-radius:2px;transform:rotate(45deg)}
+.list button.on{background:var(--p)}
+.view h3{color:var(--p)}
+.fa{background:var(--p);border-radius:6px;border-bottom:6px solid var(--s)}
+.fb{border-radius:6px;border:1px solid var(--ln);border-top:6px solid var(--s);background:repeating-linear-gradient(var(--card),var(--card) 31px,var(--ln) 32px)}
+.btn{background:var(--p)}.btn.g{background:var(--card)}
+#qz .card{counter-reset:o}
+.opt{counter-increment:o;font-family:inherit}
+.opt:before{content:counter(o,upper-alpha) ".  ";font-weight:700;color:var(--p)}
+.prog i{background:var(--s)}
+footer{font-family:system-ui,sans-serif}
+.lv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+.lvb{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:12px 14px;border:1.5px solid var(--ln);border-left:5px solid var(--s);border-radius:4px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit}
+.lvb b{color:var(--p);font-size:1rem}.lvb span{font:.8rem system-ui,sans-serif;color:var(--mut)}
+.lvb.on{background:var(--p);border-color:var(--p);border-left-color:var(--s)}.lvb.on b,.lvb.on span{color:#fff}
+@media(max-width:520px){.lv{grid-template-columns:1fr}}
+.ct{display:inline-block;margin:0 0 12px;padding:10px 22px;border:2px solid var(--p);border-bottom:4px solid var(--s);border-radius:6px;background:var(--card);color:var(--ink);font:700 1.15rem system-ui,sans-serif}.ct b{color:var(--s);font-size:1.25rem;margin-inline-start:6px;letter-spacing:.02em}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px 18px}header .ct{margin:0;padding:8px 18px;font-size:1.05rem}header .ct b{font-size:1.2rem}
+a.ct{display:inline-flex;align-items:center;gap:8px;text-decoration:none}a.ct svg{flex:none}
+.ovw .card{margin-bottom:14px}.ovw h3{margin:0 0 8px;color:var(--p);font:700 1.2rem Georgia,serif;border-bottom:2px solid var(--s);padding-bottom:4px}
+.ovw h4{margin:14px 0 4px;color:var(--s);font:700 .95rem system-ui,sans-serif}.ovw .sub{margin:10px 0 2px;font:700 .85rem system-ui,sans-serif;color:var(--mut)}
+.ovw ul,.ovw ol{margin:4px 0;padding-inline-start:22px}.ovw li{margin:4px 0}.ovw p{margin:6px 0}
+.ovw td:first-child{white-space:normal}.ovw .card:before{content:none}
+</style><style>
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;margin:0 0 12px;color:var(--mut)}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.dg .dh{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.dg .dh h3{margin:0;color:var(--p);font:700 1.2rem Georgia,serif}
+.bdg{background:var(--bg);border:1px solid var(--ln);border-radius:99px;padding:2px 10px;font-size:.75rem;color:var(--mut)}
+.pp{margin:6px 0;color:var(--ink)}.src{font-size:.8rem;color:var(--mut);margin:0 0 8px}
+.bar2{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.cv{overflow:auto;border:1px solid var(--ln);border-radius:10px;padding:12px;max-height:70vh;background:var(--bg);font-size:16px}
+.cv ul{list-style:none;margin:6px 0 0 11px;padding:0 0 0 1.4em;border-left:2px solid var(--ln)}.cv li{position:relative;margin:7px 0}
+.cv li:before{content:"";position:absolute;left:-1.4em;top:1.05em;width:1.1em;border-top:2px solid var(--ln)}
+.cv li.cl>ul{display:none}.nr{display:flex;align-items:center;gap:6px}
+.tg{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);cursor:pointer;padding:0;line-height:1}
+.nd{border:2px solid var(--p);background:var(--card);color:var(--ink);border-radius:10px;padding:.5em .8em;font-family:inherit;font-weight:600;font-size:.9em;line-height:1.3;text-align:left;cursor:pointer;transition:box-shadow .15s}
+.r-m{background:var(--p);color:#fff}.r-b{border-color:var(--s)}.r-s{border-color:#b03a6a}.r-r{border-color:var(--ok)}.r-w{border-color:var(--bad);background:#fdf0ee}
+.nd.rel{box-shadow:0 0 0 3px #f0b3a8}.nd.on{box-shadow:0 0 0 3px var(--s)}
+.sq{display:flex;flex-direction:column;align-items:flex-start;margin:8px 0 0 4px}.sq.h{flex-direction:row;align-items:flex-start}
+.it{display:flex;flex-direction:column;align-items:flex-start}.ar{display:flex;gap:8px;align-items:center;color:var(--s);padding:5px 10px;font-size:.85em}.sq.h .ar{flex-direction:column;padding:8px 4px;text-align:center;max-width:90px}
+.dt{background:var(--card);border:1px dashed var(--p);border-radius:10px;padding:12px;margin-top:10px;min-height:56px}.dt p{margin:4px 0}.dt ul{margin:4px 0;padding-left:20px}.rl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+</style><style id="dgfx">
+.dg{position:relative;overflow:hidden;border:0;border-radius:16px;box-shadow:0 6px 22px rgba(122,21,39,.12);padding-top:22px;animation:dgin .5s ease both}
+.dg:before{content:"";position:absolute;inset:0 0 auto 0;height:7px;background:linear-gradient(90deg,var(--p),#b03a6a,var(--ok),var(--s))}
+@keyframes dgin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.dg .dh h3{font-size:1.3rem;background:linear-gradient(90deg,var(--p),#b03a6a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dg .bdg{background:linear-gradient(135deg,var(--p),#b03a6a);color:#fff;border:0;padding:3px 12px;font-weight:700;letter-spacing:.03em}
+.dg .src{border-inline-start:3px solid var(--s);padding-inline-start:8px}
+.cv{background-color:#fcf6f3;background-image:radial-gradient(circle,#ecd8d3 1px,transparent 1.3px);background-size:18px 18px;border-radius:14px;border:1px solid var(--ln)}
+.nd{border-width:0;border-inline-start:6px solid var(--c,var(--p));border-radius:12px;background:color-mix(in srgb,var(--c,var(--p)) 9%,#fff);box-shadow:0 2px 6px rgba(60,15,20,.10);transition:transform .15s,box-shadow .2s}
+.nd:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 16px rgba(60,15,20,.18)}
+.r-m{--c:var(--p);background:linear-gradient(135deg,var(--p),#a52a40);color:#fff;font-size:1.05em;padding:.65em 1.1em;border-radius:99px;box-shadow:0 6px 16px rgba(122,21,39,.35)}
+.r-b{--c:var(--s)}.r-s{--c:#b03a6a}.r-r{--c:var(--ok)}.r-w{--c:var(--bad);background:color-mix(in srgb,var(--bad) 10%,#fff)}
+.r-m:hover{color:#fff}
+.nd.rel{box-shadow:0 0 0 3px #f0b3a8;animation:relp 1.4s ease-in-out infinite}
+@keyframes relp{50%{box-shadow:0 0 0 7px rgba(240,179,168,.35)}}
+.nd.on{box-shadow:0 0 0 3px var(--s),0 10px 22px rgba(200,69,47,.3);transform:scale(1.04)}
+.cv ul{border-left:2px dashed #dbb3ae}
+.cv li:before{border-top:2px dashed #dbb3ae}
+.cv li:after{content:"";position:absolute;left:-1.4em;top:calc(1.05em - 4px);width:8px;height:8px;border-radius:50%;background:var(--s);margin-left:-4px}
+.tg{background:var(--p);color:#fff;border:0;font-weight:700;transition:transform .2s}
+.tg:hover{transform:scale(1.2) rotate(90deg)}
+.sq{counter-reset:st;border-inline-start:0}
+.sq .it{counter-increment:st;position:relative;padding-inline-start:34px}
+.sq .it:before{content:counter(st);position:absolute;inset-inline-start:0;top:2px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--s),#c0476a);color:#fff;font:700 .8rem system-ui;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(200,69,47,.4)}
+.ar{color:var(--p);font-weight:700}.ar span{display:inline-block;font-size:1.4em;animation:flow 1.2s ease-in-out infinite}
+.sq:not(.h) .ar span{animation-name:flowd}
+@keyframes flow{50%{transform:translateX(6px)}}
+@keyframes flowd{50%{transform:translateY(5px)}}
+.ar small{background:#fff;border:1px solid var(--ln);border-radius:99px;padding:1px 9px;color:var(--mut);font-weight:400}
+.dt{border:0;border-inline-start:5px solid var(--s);background:linear-gradient(135deg,#fff,#fcf4f1);box-shadow:0 4px 14px rgba(60,15,20,.10);border-radius:12px;animation:dtin .25s ease}
+@keyframes dtin{from{opacity:.3;transform:translateY(6px)}}
+.dt>b{color:var(--p);font-size:1.1em}
+.dg .chip{border-radius:99px;transition:background .15s,transform .15s}
+.dg .chip:hover{background:var(--p);color:#fff;transform:translateY(-1px)}
+.legend span{background:#fff;border:1px solid var(--ln);border-radius:99px;padding:3px 10px}
+@media(prefers-reduced-motion:reduce){.dg,.nd,.ar span,.dt,.nd.rel{animation:none!important;transition:none!important}}
+</style>
+<style id="dgpro">
+/* ===== Professional diagrams ===== */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.legend span{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--ln);border-radius:99px;padding:5px 12px;font:600 .78rem system-ui,sans-serif;color:var(--ink);box-shadow:0 1px 2px rgba(60,15,20,.06)}
+.legend i{width:11px;height:11px;border-radius:3px;margin:0}
+.dgx{position:relative;overflow:hidden;border:0;border-radius:18px;padding:24px 18px 18px;margin-bottom:26px;box-shadow:0 10px 30px rgba(122,21,39,.13),0 1px 3px rgba(122,21,39,.1)}
+.dgx:before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,#7a1527,#b03a6a,#1d7a45,#c8452f)}
+.dx-h{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dx-no{flex:none;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#7a1527,#b03a6a);color:#fff;font:700 1.1rem Georgia,serif;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(122,21,39,.3)}
+.dx-ht{flex:1 1 220px;min-width:0}
+.dx-ht h3{margin:0;color:var(--p);font:700 1.25rem/1.25 Georgia,serif}
+.dx-p{margin:2px 0 0;color:var(--mut);font:.9rem/1.4 system-ui,sans-serif}
+.dx-bg{flex:none;background:#f8e9e7;border:1px solid #ecc9c6;color:#7a1527;border-radius:99px;padding:4px 12px;font:700 .72rem system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.dx-s{margin:10px 0 12px;font:.78rem system-ui,sans-serif;color:var(--mut);border-inline-start:3px solid var(--s);padding-inline-start:9px}
+.dx-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.dx-bt{border:1px solid var(--ln);background:#fff;color:var(--ink);border-radius:8px;padding:6px 12px;font:600 .8rem system-ui,sans-serif;cursor:pointer;min-width:34px;transition:background .15s,color .15s,border-color .15s}
+.dx-bt:hover{background:var(--p);border-color:var(--p);color:#fff}
+.dx-st{position:relative;overflow:auto;max-height:72vh;border:1px solid var(--ln);border-radius:14px;background-color:#fcf6f3;background-image:radial-gradient(circle,#ecd8d3 1px,transparent 1.4px);background-size:20px 20px;-webkit-overflow-scrolling:touch}
+.dx-wrap{position:relative}
+.dx-cv{position:absolute;left:0;top:0;transform-origin:0 0;--nw:222px}
+.dx-svg{position:absolute;left:0;top:0;z-index:0;pointer-events:none}
+.dx-svg svg{display:block;overflow:visible}
+.dx-pl{position:absolute;left:0;top:0;z-index:4;pointer-events:none}
+.e{fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.6;transition:opacity .2s,stroke-width .2s}
+.e.rl{opacity:1}
+.e.x{stroke-dasharray:7 6;opacity:.85}
+.e.x.lk{opacity:.4}
+.e.t{opacity:.55}
+.hs .e{opacity:.18}
+.hs .e.hi{opacity:1;stroke-width:3.4}
+.dx-pill{position:absolute;transform:translate(-50%,-50%);background:#fff;border:1px solid #e6d0cb;color:#c8452f;font:700 10.5px/1 system-ui,sans-serif;padding:4px 9px;border-radius:99px;white-space:nowrap;box-shadow:0 2px 5px rgba(60,15,20,.12)}
+.dx-pill.lk{opacity:0;transition:opacity .2s}.dx-pill.lk.hi{opacity:1}
+.dx-pill.r{transform:translate(14px,-50%);color:#7a1527}
+.dx-nd{position:absolute;z-index:2;box-sizing:border-box;width:var(--nw);padding:11px 32px 11px 20px;border-radius:12px;text-align:left;cursor:pointer;
+ background:color-mix(in srgb,var(--c) 7%,#fff);color:#2b1416;font:600 13.5px/1.32 system-ui,-apple-system,"Segoe UI",sans-serif;
+ box-shadow:0 1px 2px rgba(60,15,20,.14),0 6px 16px rgba(60,15,20,.09);transition:box-shadow .18s,transform .18s;animation:dxin .35s ease backwards}
+@keyframes dxin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dx-nd:before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:5px;border-radius:0 5px 5px 0;background:var(--c)}
+.dx-nd:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(60,15,20,.16),0 12px 24px rgba(60,15,20,.16)}
+.dx-nd:focus-visible{outline:3px solid #c8452f;outline-offset:3px}
+.dx-nd.rel{box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 38%,transparent),0 6px 16px rgba(60,15,20,.12)}
+.dx-nd.on{background:var(--c);color:#fff;transform:translateY(-2px) scale(1.03);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--c),0 14px 26px rgba(60,15,20,.3)}
+.dx-nd.on:before{background:#fff}
+.dx-nd.root{padding:14px 34px 14px 22px;border-radius:14px;font-size:15px;color:#fff;background:linear-gradient(135deg,#7a1527,#a52a40);box-shadow:0 10px 24px rgba(122,21,39,.4)}
+.dx-nd.root:before{display:none}
+.dx-nd.root.on{box-shadow:0 0 0 3px #fff,0 0 0 6px #7a1527,0 14px 26px rgba(60,15,20,.35)}
+.dx-nd.ban{padding:16px 24px 18px;border-radius:16px;width:auto}
+.dx-tag{display:inline-block;margin-bottom:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:2px 10px;font:700 .66rem system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase}
+.dx-nd.ban .dx-lb{display:block;font:700 1.15rem/1.25 Georgia,serif}
+.dx-ds{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px;font:400 .82rem/1.5 system-ui,sans-serif;opacity:.92}
+.dx-nd.stp{padding-left:56px}
+.dx-nd.stp:before{display:none}
+.dx-bd{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--c);color:#fff;font:700 .82rem system-ui,sans-serif;font-style:normal;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(60,15,20,.3)}
+.dx-nd.on .dx-bd{background:#fff;color:var(--c)}
+.dxtl .dx-bd{left:18px;width:16px;height:16px;border:3px solid #fff;box-shadow:0 0 0 2.5px var(--c)}
+.dxtl .dx-nd.stp{padding-left:50px}
+.dx-sub{display:block;margin-top:4px;font:400 12.5px/1.45 system-ui,sans-serif;color:#7a5a5c}
+.dx-nd.on .dx-sub{color:rgba(255,255,255,.92)}
+.dx-tg{position:absolute;right:-12px;top:50%;transform:translateY(-50%);min-width:24px;height:24px;padding:0 6px;border-radius:99px;border:2px solid var(--c);background:#fff;color:var(--c);font:700 12px/1 system-ui,sans-serif;cursor:pointer;z-index:3;box-shadow:0 2px 5px rgba(60,15,20,.2);transition:background .15s,color .15s}
+.dx-tg:hover{background:var(--c);color:#fff}
+.dx-dt{margin-top:12px;padding:14px 16px;border-radius:12px;border-inline-start:6px solid var(--c,#7a1527);background:linear-gradient(135deg,#fff,#fcf4f1);box-shadow:0 4px 14px rgba(60,15,20,.1);animation:dxin .25s ease backwards;min-height:56px}
+.dx-dt h4{margin:2px 0 6px;color:var(--c,#7a1527);font:700 1.15rem Georgia,serif}
+.dx-dt p{margin:4px 0}.dx-dt ul{margin:6px 0;padding-inline-start:20px}.dx-dt li{margin:3px 0}
+.dx-hint{color:var(--mut);font:.9rem system-ui,sans-serif}
+.dx-dk{display:inline-flex;align-items:center;gap:6px;font:700 .68rem system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--c)}
+.dx-dk i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.dx-pa{margin:4px 0 0;font:.76rem system-ui,sans-serif;color:var(--mut)}
+.dx-g{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.dx-g small{font:700 .7rem system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-inline-end:4px}
+.dx-ch{display:inline-flex;align-items:center;gap:6px;border:1.5px solid color-mix(in srgb,var(--c) 45%,#fff);background:color-mix(in srgb,var(--c) 7%,#fff);color:#2b1416;border-radius:99px;padding:4px 11px;font:600 .8rem system-ui,sans-serif;cursor:pointer;transition:background .15s,color .15s}
+.dx-ch i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.dx-ch:hover{background:var(--c);color:#fff}.dx-ch:hover i{background:#fff}
+.dgx:fullscreen{overflow:auto;background:var(--bg);padding:22px;border-radius:0}
+.dgx:fullscreen .dx-st{max-height:calc(100vh - 300px)}
+@media(max-width:600px){.dgx{padding:20px 12px 14px}.dx-ht h3{font-size:1.1rem}.dx-nd{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.dx-nd,.dx-dt{animation:none!important;transition:none!important}.e{transition:none}}
+</style>
+<style id="acad">
+/* ===== Academic study theme (appearance only) ===== */
+:root{--bg:#f1e6e0;--card:#fffaf8;--ink:#2b1416;--mut:#7a5a5c;--ln:#e4cdc8;--p:#7a1527;--s:#c8452f;--ok:#2e6b3b;--bad:#a3271d;--paper:#fffaf8;--rule:#e3a39a;--serif:Charter,"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font:17.5px/1.7 var(--serif);-webkit-font-smoothing:antialiased}
+header{max-width:960px;margin:0 auto;padding:30px 0 14px;border:0;border-bottom:0;gap:10px 18px}
+h1{font:700 clamp(1.9rem,5.5vw,2.6rem)/1.1 var(--serif);color:var(--ink);letter-spacing:.01em;font-variant:small-caps;text-transform:none}
+header p{font:italic 1rem var(--serif);color:var(--mut);margin-top:4px}
+header>div{padding-bottom:10px;border-bottom:3px double var(--ink);min-width:min(100%,360px);flex:1 1 360px}
+header .ct{border:1px solid var(--ink);border-bottom-width:3px;border-radius:0;background:var(--paper);box-shadow:none;font:600 .95rem var(--serif);padding:7px 14px}
+header .ct b{color:var(--s);font-size:1rem}
+/* tabs like book index tabs */
+nav{max-width:960px;margin:6px auto 0;padding:0;gap:3px;border:0;align-items:flex-end}
+nav button{border:1px solid var(--ln);border-bottom:0;border-radius:3px 3px 0 0;background:#ead6d1;color:var(--mut);padding:9px 16px 8px;font:600 .9rem var(--serif);letter-spacing:.02em;margin-bottom:0;position:relative;top:1px}
+nav button[aria-selected=true]{background:var(--paper);color:var(--ink);border-color:var(--ln);border-bottom:1px solid var(--paper);padding-top:11px;font-weight:700;box-shadow:inset 0 3px 0 var(--s)}
+/* the sheet */
+main{max-width:960px;margin:0 auto 40px;background:var(--paper);border:1px solid var(--ln);padding:26px 30px 40px 56px;position:relative;box-shadow:0 1px 0 #d9bdb8,0 6px 0 -3px #e4cdc8}
+main:before{content:"";position:absolute;left:40px;top:0;bottom:0;border-left:1px solid var(--rule)}
+@media(max-width:1000px){header,nav{padding-left:14px;padding-right:14px}main{margin-left:0;margin-right:0}}@media(max-width:640px){main{padding:18px 16px 28px 30px}main:before{left:18px}}
+h2{font:700 1.65rem/1.2 var(--serif);color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:6px;margin:0 0 18px;letter-spacing:.01em}
+h2:before{color:var(--s);margin-right:.5em;font-variant:normal}
+#s0>h2:before{content:"I."}#s1>h2:before{content:"II."}#s2>h2:before{content:"III."}#s3>h2:before{content:"IV."}#s4>h2:before{content:"V."}
+h3{font-family:var(--serif)}
+/* cards become ruled textbook blocks */
+.card{background:transparent;border:0;border-radius:0;box-shadow:none;padding:14px 0 16px;margin:0 0 6px;border-bottom:1px solid var(--ln)}
+.ovw .card{padding:14px 0 16px}
+.ovw h3{font:700 1.08rem var(--serif);font-variant:small-caps;letter-spacing:.05em;color:var(--p);border:0;border-bottom:1px solid var(--ink);padding-bottom:3px;margin:0 0 10px}
+.ovw h4{font:700 .95rem var(--serif);font-style:italic;color:var(--s)}
+.ovw .sub{font:700 .78rem var(--serif);font-variant:small-caps;letter-spacing:.06em;color:var(--mut)}
+.ovw ul{list-style:square}.ovw li::marker{color:var(--s)}
+.grid .card{border:1px solid var(--ln);border-left:4px solid var(--s);background:#fbf1ee;padding:12px 14px;margin:0}
+.grid .card:before{font:700 .72rem var(--serif);font-variant:small-caps;letter-spacing:.08em;color:var(--s)}
+table{font-size:.95rem}
+th{background:transparent;color:var(--ink);font:700 .8rem var(--serif);font-variant:small-caps;letter-spacing:.06em;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink)}
+td,th{border-bottom:1px solid var(--ln);padding:8px 10px 8px 4px}
+tr:nth-child(even) td{background:transparent}
+tbody tr:last-child td{border-bottom:2px solid var(--ink)}
+td:first-child{color:var(--p)}
+.chip,.node,.steps button,.btn,.opt,input[type=search],.note{border-radius:2px}
+.chip{border:1px solid var(--ln);background:var(--paper);font:.85rem var(--serif)}
+.chip.on,.node.on,.steps button.on{background:var(--p);border-color:var(--p);color:#fff}
+.btn{background:var(--p);font:600 .92rem var(--serif);letter-spacing:.02em;padding:9px 18px}
+.btn.g{background:var(--paper);color:var(--ink);border:1px solid var(--ink)}
+.note{background:#fbf1ee;border:0;border-left:4px solid var(--s)}
+/* diagrams: figure plates */
+.legend span{border-radius:2px;box-shadow:none;background:var(--paper);font:600 .78rem var(--serif)}
+.dg,.dgx{border:1px solid var(--ink);border-radius:0;box-shadow:none;background:var(--paper);animation:none;padding:20px 16px 16px;margin-bottom:22px}
+.dg:before,.dgx:before{height:4px;background:var(--p)}
+.dx-no{border-radius:0;background:var(--p);box-shadow:none;font-family:var(--serif)}
+.dx-ht h3{font-family:var(--serif)}
+.dx-p{font-family:var(--serif);font-style:italic}
+.dx-bg{border-radius:0;background:transparent;border:1px solid var(--ink);color:var(--ink);font-family:var(--serif)}
+.dx-s{font-family:var(--serif);font-style:italic;border-inline-start:2px solid var(--s)}
+.dx-bt{border-radius:2px;border:1px solid var(--ink);background:var(--paper);font-family:var(--serif)}
+.dx-st,.cv{border:1px solid var(--ink);border-radius:0;background-color:#fcf6f3;background-image:linear-gradient(#ecd8d3 1px,transparent 1px),linear-gradient(90deg,#ecd8d3 1px,transparent 1px);background-size:24px 24px}
+.dx-nd{border-radius:2px;box-shadow:none;border:1px solid color-mix(in srgb,var(--c) 55%,#fff);background:color-mix(in srgb,var(--c) 6%,#fffaf8);animation:none;font-family:var(--serif);font-weight:600}
+.dx-nd:hover{transform:none;box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 40%,transparent)}
+.dx-nd.rel{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 45%,transparent)}
+.dx-nd.on{transform:none;box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--c)}
+.dx-nd.root{background:var(--p);border-radius:2px;box-shadow:none;border-color:var(--p)}
+.dx-nd.root.on{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--p)}
+.dx-nd.ban{border-radius:2px}
+.dx-tag{border-radius:0}
+.dx-bd{box-shadow:none;border-radius:50%}
+.dx-pill{border-radius:2px;box-shadow:none;font-family:var(--serif);background:var(--paper)}
+.dx-tg{box-shadow:none;border-radius:50%}
+.dx-dt,.dt{border-radius:0;box-shadow:none;animation:none;background:#fbf1ee;border:0;border-inline-start:4px solid var(--c,var(--s))}
+.dx-dt h4,.dx-dt p,.dx-dt li{font-family:var(--serif)}
+.dx-ch{border-radius:2px;font-family:var(--serif)}
+.dx-ch:hover{color:#fff}
+.dx-hint,.dx-pa,.dx-dk,.dx-g small,.dx-sub{font-family:var(--serif)}
+.dg .chip{border-radius:2px}
+.dx-nd,.dx-pill,.nb,.lvb,.opt{font-family:var(--serif)}
+/* mini map */
+.mm .nb{border-radius:2px;border:1px solid var(--ln);background:var(--paper);font-family:var(--serif);font-weight:600}
+.mm .l1>.nb{background:var(--p);border-color:var(--p)}
+.mm ul{border-left:1px solid var(--ink)}
+#mr div{padding:7px 0;border-bottom:1px dotted var(--ln)}
+/* flash cards: index cards */
+.fa,.fb{border-radius:2px}
+.fa{background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-top:6px solid var(--s);font:700 1.25rem/1.45 var(--serif);box-shadow:3px 3px 0 #e4cdc8}
+.fb{border:1px solid var(--ink);border-top:6px solid var(--p);box-shadow:3px 3px 0 #e4cdc8;font-family:var(--serif);background:repeating-linear-gradient(var(--paper),var(--paper) 31px,#ecd9d5 32px)}
+.fb .tg{font-family:var(--serif);font-variant:small-caps;font-size:.8rem;letter-spacing:.08em;color:var(--s)}
+.lvb{border:1px solid var(--ln);border-left:4px solid var(--s);border-radius:2px;background:var(--paper)}
+.lvb b{font-family:var(--serif)}.lvb span{font-family:var(--serif)}
+.lvb.on{background:var(--p);border-color:var(--p);border-left-color:var(--s)}
+/* quiz: exam paper */
+#qz .card{border:1px solid var(--ink);border-top:4px double var(--ink);padding:16px 20px 18px;background:var(--paper)}
+#qz .card small{font:700 .75rem var(--serif);font-variant:small-caps;letter-spacing:.07em;color:var(--mut)}
+#qz .card h3{font:700 1.2rem/1.45 var(--serif);color:var(--ink);margin:8px 0 10px}
+.opt{border:1px solid var(--ln);background:transparent;padding:10px 14px;font-size:1rem}
+.opt:hover{background:#f7e9e5}
+.opt:before{font-family:var(--serif);color:var(--s)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--paper))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--paper))}
+.prog{height:4px;border-radius:0;background:var(--ln)}.prog i{background:var(--s)}
+.qsum{max-width:300px}.qsum th,.qsum td{border:0;border-bottom:1px solid var(--ln)}
+.qsum th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink)}
+.qsum tr:last-child td{border-bottom:2px solid var(--ink)}
+input[type=search]{border:1px solid var(--ink);background:var(--paper);font-family:var(--serif)}
+@media print{body,html{background:#fff}nav,.bar,.dx-bar{display:none}main{border:0;box-shadow:none}section{display:block!important}}
+</style>
+<style id="crimson">
+/* ===== Crimson study theme (hero + tabs + cards) ===== */
+:root{--bg:#f1e6e0;--paper:#fffaf8;--card:#fffaf8;--ink:#2b1416;--mut:#7a5a5c;--ln:#e6d0cb;--p:#7a1527;--s:#c8452f;--ok:#2e6b3b;--bad:#b3222f;--rose:#f0b3a8;--sand:#f2c9a8;
+--serif:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--disp:Fraunces,Georgia,"Times New Roman",serif}
+html{background:var(--bg)}
+body{background:var(--bg);font:400 16.5px/1.65 var(--serif);color:var(--ink)}
+/* hero */
+header.hero{position:relative;overflow:hidden;max-width:none;margin:0;padding:0;display:block;border:0;color:#fff;
+background:linear-gradient(135deg,#2e0a10 0%,#5a1220 55%,#7d2231 100%)}
+header.hero .waves{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-in{position:relative;max-width:1100px;margin:0 auto;padding:clamp(54px,9vw,96px) 24px clamp(40px,6vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px}
+header.hero>div.hero-in,.hero-tx{border:0;padding-bottom:0;min-width:0;flex:1 1 auto}
+.hero-tx{max-width:640px}
+.kick{font:700 .95rem var(--serif);letter-spacing:.02em;color:var(--sand);margin-bottom:14px}
+header.hero h1{font:700 clamp(3.2rem,10vw,5.6rem)/.98 var(--disp);color:#fff;font-variant:normal;letter-spacing:-.02em;margin:0}
+header.hero h1 em{font-style:italic;color:var(--sand)}
+header.hero p{font:400 clamp(1rem,2.3vw,1.2rem)/1.65 var(--serif);font-style:normal;color:#f6e3dc;margin:22px 0 0;max-width:560px}
+header.hero .ct{margin-top:24px;display:inline-flex;border:1px solid rgba(255,255,255,.35);border-radius:99px;background:rgba(255,255,255,.1);color:#fff;font:600 .9rem var(--serif);padding:8px 16px;box-shadow:none;backdrop-filter:blur(4px)}
+header.hero .ct b{color:var(--sand);font-size:.95rem}
+.flask{flex:none;width:clamp(110px,18vw,200px);height:auto;opacity:.95}
+@media(max-width:640px){.flask{position:absolute;right:14px;top:18px;width:84px;opacity:.5}}
+/* tabs */
+nav{position:sticky;top:0;z-index:30;max-width:none;margin:0;padding:0 max(14px,calc((100% - 1100px)/2 + 10px));gap:6px;background:#fffaf5;border-bottom:1px solid var(--ln);align-items:stretch;overflow-x:auto;box-shadow:0 2px 10px rgba(60,15,20,.06)}
+nav button{display:inline-flex;align-items:center;gap:9px;border:0;border-bottom:3px solid transparent;border-radius:0;background:none;color:var(--mut);padding:18px 18px 15px;font:600 .98rem var(--serif);letter-spacing:0;top:0;margin:0;white-space:nowrap;box-shadow:none}
+nav button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+nav button:hover{color:var(--p)}
+nav button[aria-selected=true]{background:none;color:var(--ink);font-weight:700;border-bottom:3px solid var(--s);box-shadow:none;padding-top:18px}
+nav button[aria-selected=true] svg{color:var(--p)}
+/* content area: plain, no paper sheet */
+main{max-width:1100px;margin:0 auto;background:none;border:0;box-shadow:none;padding:30px 24px 56px}
+main:before{display:none}
+h2{font:700 clamp(1.9rem,4.5vw,2.5rem)/1.15 var(--disp);color:var(--ink);border:0;padding:0;margin:0 0 6px;letter-spacing:-.01em}
+h2:before{content:none!important}
+#s0>h2:after,#s1>h2:after,#s2>h2:after,#s3>h2:after,#s4>h2:after{content:"";display:block;width:54px;height:4px;border-radius:4px;background:var(--s);margin:12px 0 22px}
+h3,.dx-ht h3,.dx-dt h4,.view h3{font-family:var(--disp)}
+/* cards (like the reference) */
+.card,.ovw .card{background:var(--paper);border:0;border-left:5px solid var(--s);border-radius:3px;box-shadow:0 1px 2px rgba(60,15,20,.06);padding:20px 24px 22px;margin:0 0 16px}
+.ovw h3{font:700 .95rem var(--serif);font-variant:normal;letter-spacing:0;color:var(--p);border:0;padding:0;margin:0 0 8px}
+.ovw h4{font:700 .95rem var(--serif);font-style:normal;color:var(--p)}
+.ovw .sub{font:700 .8rem var(--serif);font-variant:normal;letter-spacing:.04em;color:var(--mut)}
+.ovw ul{list-style:disc}.ovw li::marker{color:var(--s)}
+.ovw b,.ovw strong{color:var(--ink)}
+.grid .card{background:var(--paper);border:0;border-left:5px solid var(--s);padding:18px 20px}
+.grid .card:before{font:700 .8rem var(--serif);font-variant:normal;letter-spacing:0;color:var(--p)}
+th{background:#f5e3df;color:var(--p);border:0;border-bottom:2px solid var(--s);font:700 .8rem var(--serif);font-variant:normal;letter-spacing:.05em;text-transform:uppercase}
+tbody tr:last-child td{border-bottom:1px solid var(--ln)}
+td:first-child{color:var(--p)}
+/* controls */
+.chip,.node,.steps button,.btn,.opt,input[type=search],.note,.dx-bt,.dx-ch{border-radius:8px}
+.chip.on,.node.on,.steps button.on{background:var(--p);border-color:var(--p);color:#fff}
+.btn{background:var(--p);font:600 .92rem var(--serif);border-radius:99px;padding:10px 22px}
+.btn:hover{background:#5f0f1e}
+.btn.g{background:var(--paper);color:var(--ink);border:1.5px solid var(--ln)}
+.note{background:#fbeeea;border:0;border-left:4px solid var(--s)}
+/* diagrams */
+.dg,.dgx{border:0;border-radius:6px;box-shadow:0 2px 14px rgba(60,15,20,.09);background:var(--paper);padding:26px 20px 20px}
+.dg:before,.dgx:before{height:5px;background:linear-gradient(90deg,#4a0f18,var(--p),var(--s),#e8907f)}
+.dx-no{border-radius:10px;background:linear-gradient(135deg,#4a0f18,var(--p));font-family:var(--disp)}
+.dx-p,.dx-s{font-style:normal}
+.dx-bg{border-radius:99px;border:0;background:#f8e3df;color:var(--p)}
+.dx-st,.cv{border:1px solid var(--ln);border-radius:10px;background-color:#fcf6f3;background-image:radial-gradient(circle,#e3c3be 1px,transparent 1.4px);background-size:20px 20px}
+.dx-nd{border-radius:10px;box-shadow:0 1px 3px rgba(60,15,20,.14);border:1px solid color-mix(in srgb,var(--c) 40%,#fff);background:color-mix(in srgb,var(--c) 7%,#fff)}
+.dx-nd:hover{box-shadow:0 6px 16px rgba(60,15,20,.16)}
+.dx-nd.on{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--c),0 10px 22px rgba(60,15,20,.25)}
+.dx-nd.root{background:linear-gradient(135deg,#4a0f18,var(--p));border-radius:12px;box-shadow:0 8px 20px rgba(122,21,39,.35)}
+.dx-nd.ban,.dx-tag{border-radius:12px}.dx-tag{border-radius:99px}
+.dx-pill{border-radius:99px;background:#fff}
+.dx-dt,.dt{border-radius:8px;background:#fbf1ee;border:0;border-inline-start:5px solid var(--c,var(--s))}
+.legend span{border-radius:99px;background:var(--paper)}
+/* mini map */
+.mm .nb{border-radius:8px;border:1px solid var(--ln);background:var(--paper)}
+.mm .l1>.nb{background:linear-gradient(135deg,#4a0f18,var(--p));border-color:var(--p)}
+.mm ul{border-left:2px solid #e3c3be}
+/* flash cards */
+.fa,.fb{border-radius:8px}
+.fa{background:linear-gradient(135deg,#3a0c14,#6b1522);color:#fff;border:0;border-bottom:6px solid var(--sand);box-shadow:0 8px 22px rgba(60,15,20,.22);font:700 1.3rem/1.45 var(--disp)}
+.fb{border:0;border-top:6px solid var(--s);background:var(--paper);box-shadow:0 8px 22px rgba(60,15,20,.14)}
+.fb .tg{color:var(--p);font-variant:normal;letter-spacing:.07em;font-size:.72rem}
+.lvb{border:1.5px solid var(--ln);border-left:5px solid var(--s);border-radius:8px;background:var(--paper)}
+.lvb.on{background:var(--p);border-color:var(--p);border-left-color:var(--sand)}
+/* quiz */
+#qz .card{border:0;border-left:5px solid var(--s);border-top:0;background:var(--paper);padding:20px 24px}
+#qz .card h3{font:700 1.2rem/1.45 var(--disp);color:var(--ink)}
+.opt{border:1.5px solid var(--ln);background:#fff;border-radius:8px}
+.opt:hover{background:#fbeeea}
+.opt:before{color:var(--p)}
+.prog{height:6px;border-radius:9px;background:#ecd8d3}.prog i{background:linear-gradient(90deg,var(--p),var(--s))}
+.qsum th{border:0;border-bottom:2px solid var(--s)}
+.qsum td{border:0;border-bottom:1px solid var(--ln)}.qsum tr:last-child td{border-bottom:1px solid var(--ln)}
+input[type=search]{border:1.5px solid var(--ln);background:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--s)}
+footer{border-color:var(--ln)}
+#qz .card small,.fb .tg{font-variant:normal!important}#qz .card small{font:600 .78rem var(--serif);letter-spacing:.03em;color:var(--mut)}
+</style>
+<style id="ovx-css">
+.ovx{font-family:var(--serif);font-size:1rem;line-height:1.65;color:var(--ink)}
+.ovx [hidden]{display:none!important}
+.ovx .ovx-eyebrow{font:700 .78rem var(--serif);letter-spacing:.08em;text-transform:uppercase;color:var(--s);margin:0 0 4px}
+.ovx .ovx-title{font:700 clamp(1.6rem,4.6vw,2.2rem)/1.15 var(--serif);color:var(--p);margin:0 0 6px;border:0;padding:0;font-variant:normal;letter-spacing:0}
+.ovx .ovx-sub{font:italic 1.05rem var(--serif);color:var(--mut);margin:0 0 10px}
+.ovx .ovx-lead{margin:0 0 16px;max-width:70ch}
+.ovx .ovx-hero{background:var(--paper);border:1px solid var(--ln);border-left:5px solid var(--p);padding:18px 20px;margin-bottom:18px}
+.ovx .ovx-prog{margin-top:6px}
+.ovx .ovx-pt{display:flex;justify-content:space-between;gap:10px;font-size:.95rem}
+.ovx .ovx-bar{height:10px;background:var(--ln);border-radius:9px;overflow:hidden;margin:6px 0}
+.ovx .ovx-bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.ovx .ovx-hint{margin:2px 0 0;font-size:.82rem;color:var(--mut)}
+.ovx .ovx-h4{font:700 1.2rem var(--serif);font-style:normal;color:var(--p);border-bottom:1px solid var(--ln);padding-bottom:4px;margin:26px 0 10px;scroll-margin-top:12px}
+.ovx .ovx-cnt{font:600 .74rem var(--serif);color:var(--mut);background:var(--bg);border:1px solid var(--ln);border-radius:99px;padding:1px 9px;margin-left:8px;white-space:nowrap}
+.ovx .ovx-map{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.ovx .ovx-map li{background:var(--paper);border:1px solid var(--ln);border-top:3px solid var(--p);padding:12px 14px;position:relative}
+.ovx .ovx-map li.dn{border-top-color:var(--ok)}
+.ovx .ovx-map button.mt{all:unset;cursor:pointer;display:block;font:700 1.02rem var(--serif);color:var(--ink);width:100%}
+.ovx .ovx-map button.mt:hover{color:var(--p)}
+.ovx .ovx-map .mn{font:700 .72rem var(--serif);color:var(--s);letter-spacing:.07em;text-transform:uppercase}
+.ovx .ovx-map .ms{margin:6px 0 0;padding:0;list-style:none;font-size:.88rem}
+.ovx .ovx-map .ms li{all:unset;display:block;margin:2px 0}
+.ovx .ovx-map .ms button{all:unset;cursor:pointer;color:var(--mut);text-decoration:underline dotted;text-underline-offset:3px}
+.ovx .ovx-map .ms button:hover{color:var(--p)}
+.ovx .ovx-map .ck{position:absolute;top:10px;right:12px;color:var(--ok);font-weight:700}
+.ovx button:focus-visible,.ovx summary:focus-visible,.ovx input:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+.ovx-shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;align-items:start}
+.ovx-side{position:sticky;top:8px;max-height:calc(100vh - 16px);overflow:auto}
+.ovx-idx{background:var(--paper);border:1px solid var(--ln);padding:8px 10px}
+.ovx-idx summary{font:700 .8rem var(--serif);letter-spacing:.07em;text-transform:uppercase;color:var(--mut);cursor:pointer;padding:6px 2px}
+.ovx-idx nav{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.ovx-idx button{all:unset;box-sizing:border-box;cursor:pointer;display:block;padding:6px 8px;font-size:.9rem;line-height:1.3;color:var(--ink);border-left:3px solid transparent}
+.ovx-idx button:hover{background:var(--bg)}
+.ovx-idx button.sub{padding-left:22px;font-size:.82rem;color:var(--mut)}
+.ovx-idx button.on{border-left-color:var(--s);background:var(--bg);font-weight:700;color:var(--p)}
+.ovx-idx .ck{color:var(--ok);float:right}
+.ovx-main{min-width:0}
+.ovx-unit{background:var(--paper);border:1px solid var(--ln);padding:20px clamp(14px,3vw,28px) 10px}
+.ovx-core{background:var(--bg);border-left:4px solid var(--p);padding:10px 14px;margin:8px 0 6px}
+.ovx-unit p{margin:8px 0}
+.ovx-unit ul{margin:6px 0;padding-inline-start:22px}.ovx-unit li{margin:4px 0}
+.ovx-ro{list-style:upper-roman;margin:6px 0}
+.ovx-d{border:1px solid var(--ln);background:var(--card);margin:10px 0;padding:0 12px}
+.ovx-d>summary{cursor:pointer;font:700 .95rem var(--serif);padding:9px 0;color:var(--ink)}
+.ovx-d[open]>summary{border-bottom:1px solid var(--ln);margin-bottom:8px}
+.ovx-d>:last-child{margin-bottom:12px}
+.ovx .sc{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ovx table.ovx-t{width:100%;border-collapse:collapse;font-size:.93rem}
+.ovx .ovx-t th{background:var(--p);color:#fff;font:700 .78rem var(--serif);letter-spacing:.05em;font-variant:normal;border:0;padding:8px;text-align:left}
+.ovx .ovx-t td{padding:8px;border-bottom:1px solid var(--ln);vertical-align:top;text-align:left;min-width:90px}
+.ovx .ovx-t td:first-child{font-weight:700;color:var(--p);white-space:normal}
+.ovx .ovx-t tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--p) 4%,var(--card))}
+.ovx .ovx-t td.ctr{text-align:center}
+.ovx .ovx-fx td{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem}
+.ovx .ovx-fx td:first-child{font-family:var(--serif)}
+.ovx .ovx-t tr.ovx-hl td{background:color-mix(in srgb,var(--s) 14%,var(--card))!important}
+.ovx .ovx-kp{background:var(--bg);border-left:4px solid var(--p);padding:9px 14px;margin:12px 0!important}
+.ovx .ovx-warn{background:color-mix(in srgb,var(--bad) 10%,var(--card));border-left:4px solid var(--bad);padding:9px 14px;margin:12px 0!important}
+.ovx .ovx-fig{font-size:.84rem;color:var(--mut);font-style:italic}
+.ovx .ovx-fn{font-size:.82rem;font-style:italic;margin:4px 0}
+.ovx .ovx-sub2{font:700 .9rem var(--serif);font-style:italic;color:var(--s);margin:12px 0 4px!important}
+.ovx .ovx-flow{list-style:none;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:8px 0;padding:0}
+.ovx .ovx-flow li{flex:1 1 150px;border:1.5px solid var(--p);background:var(--bg);padding:8px 12px;position:relative;margin:0;text-align:center}
+.ovx .ovx-flow li+li:before{content:"→";position:absolute;left:-14px;top:50%;transform:translateY(-50%);color:var(--s);font-weight:700}
+.ovx .ovx-flow li+li{margin-left:6px}
+.ovx .ovx-qr{background:color-mix(in srgb,var(--ok) 8%,var(--card));border:1px solid color-mix(in srgb,var(--ok) 40%,var(--ln));border-top:4px solid var(--ok);padding:10px 16px;margin:26px 0 14px}
+.ovx .ovx-qr h4{margin:2px 0 6px;font:700 1rem var(--serif);color:var(--ok)}
+.ovx .ovx-foot{margin-top:14px;background:var(--paper);border:1px solid var(--ln);padding:12px 14px;position:sticky;bottom:0;z-index:2}
+.ovx .ovx-done{display:flex;gap:10px;align-items:center;font-weight:700;cursor:pointer;margin-bottom:10px;min-height:44px}
+.ovx .ovx-done input{width:22px;height:22px;accent-color:var(--ok)}
+.ovx .ovx-btns{display:flex;flex-wrap:wrap;gap:8px}
+.ovx .ovx-b{border:1.5px solid var(--p);background:var(--p);color:#fff;font:600 .9rem var(--serif);padding:10px 14px;min-height:44px;cursor:pointer;border-radius:3px}
+.ovx .ovx-b.ovx-g{background:var(--card);color:var(--ink);border-color:var(--ln)}
+.ovx .ovx-b:disabled{opacity:.4;cursor:default}
+.ovx .ovx-back{all:unset;cursor:pointer;color:var(--mut);font-size:.88rem;text-decoration:underline;text-underline-offset:3px;display:inline-block;margin-bottom:8px}
+@media(max-width:860px){.ovx .ovx-foot{position:static}.ovx-shell{grid-template-columns:1fr}.ovx-side{position:static;max-height:none}.ovx-idx nav{max-height:46vh;overflow:auto}.ovx .ovx-flow li+li{margin-left:0}.ovx .ovx-flow li+li:before{content:"↓";left:50%;top:-14px;transform:translateX(-50%)}}
+</style>
+<style id="dgx-css">
+.dgx{font-family:var(--serif)}
+.dgx-card{background:var(--paper);border:1px solid var(--ln);border-top:4px solid var(--p);margin:0 0 18px;padding:14px clamp(12px,2.5vw,22px) 16px}
+.dgx-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.dgx-h h3{margin:0;font:700 1.25rem var(--serif);color:var(--p);border:0;padding:0;font-variant:normal;letter-spacing:0}
+.dgx-bd{font:600 .74rem var(--serif);color:var(--mut);background:var(--bg);border:1px solid var(--ln);border-radius:99px;padding:2px 10px}
+.dgx-src{font-size:.84rem;color:var(--mut);margin:2px 0 8px;font-style:italic}
+.dgx-tb{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.dgx-tb button{border:1.5px solid var(--ln);background:var(--card);color:var(--ink);font:600 .85rem var(--serif);padding:8px 12px;min-height:40px;cursor:pointer;border-radius:3px}
+.dgx-tb button:hover{border-color:var(--p)}
+.dgx button:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+.dgx-cv{overflow:auto;border:1px solid var(--ln);background:var(--bg);padding:12px;max-height:72vh;font-size:calc(16px*var(--z,1))}
+.dgx-n{border:2px solid var(--p);background:var(--card);color:var(--ink);font:600 .9em/1.3 var(--serif);padding:.45em .8em;text-align:left;cursor:pointer;border-radius:8px}
+.dgx-n small{display:block;font:400 .82em var(--serif);color:var(--mut)}
+.dgx-n.r{background:var(--p);color:#fff}.dgx-n.r small{color:#fff9}
+.dgx-n.g{border-color:var(--s)}
+.dgx-n.w{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--card))}
+.dgx-n.o{border-color:var(--ok)}
+.dgx-n.on{box-shadow:0 0 0 3px var(--s)}
+.dgx-t,.dgx-t ul{list-style:none;margin:0;padding:0}
+.dgx-t ul{margin:6px 0 2px 14px;padding-left:1.1em;border-left:2px solid var(--ln)}
+.dgx-t li{margin:6px 0}
+.dgx-t li.cl>ul{display:none}
+.dgx-nr{display:flex;align-items:center;gap:6px}
+.dgx-tg{flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);cursor:pointer;padding:0;font-size:.9rem;line-height:1}
+.dgx-tg::before{content:"▾"}li.cl>.dgx-nr>.dgx-tg::before{content:"▸"}
+.dgx-sp{flex:none;width:30px}
+.dgx-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px;padding:10px;background:var(--card);border:1px solid var(--ln)}
+.dgx-rt{flex:1 0 100%;font:700 .78em var(--serif);color:var(--s);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
+.dgx-ar{display:inline-flex;flex-direction:column;align-items:center;color:var(--s);font-weight:700;font-size:.82em;line-height:1.2;text-align:center;max-width:12em;padding:0 2px}
+.dgx-ar b{font-size:1.4em;line-height:1}
+.dgx-dt{border:1px solid var(--ln);border-left:4px solid var(--s);background:var(--card);padding:10px 14px;margin-top:10px;min-height:56px}
+.dgx-dt h4{margin:0 0 4px;font:700 1rem var(--serif);color:var(--p)}
+.dgx-dt p{margin:4px 0}
+.dgx-dt .h{color:var(--mut);font-style:italic}
+.dgx-lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--mut);margin:0 0 6px}
+.dgx-lg i{display:inline-block;width:12px;height:12px;border:2px solid var(--p);border-radius:3px;margin-right:5px;vertical-align:-2px;background:var(--card)}
+@media(max-width:640px){.dgx-ar{flex-basis:100%;flex-direction:row;gap:6px;max-width:none;justify-content:flex-start;padding-left:10px}.dgx-ar b{transform:rotate(90deg)}.dgx-row .dgx-n{flex:1 0 100%}}
+</style>
+<style id="mmx-css">
+.mmx{font-family:var(--serif)}
+.mmx-card{background:var(--paper);border:1px solid var(--ln);border-top:4px solid var(--p);padding:14px clamp(12px,2.5vw,22px) 16px;margin-bottom:16px}
+.mmx-tb{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
+.mmx-tb button{border:1.5px solid var(--ln);background:var(--card);color:var(--ink);font:600 .85rem var(--serif);padding:8px 12px;min-height:40px;cursor:pointer;border-radius:3px}
+.mmx-tb button:hover{border-color:var(--p)}
+.mmx button:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+.mmx-lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--mut);margin:0 0 8px}
+.mmx-lg b{font:700 .72rem var(--serif);border:1.5px solid var(--p);border-radius:4px;padding:0 5px;margin-right:4px;color:var(--p)}
+.mmx-cv{overflow:auto;border:1px solid var(--ln);background:var(--bg);padding:12px;max-height:74vh;font-size:calc(16px*var(--z,1))}
+.mmx-t,.mmx-t ul{list-style:none;margin:0;padding:0}
+.mmx-t ul{margin:5px 0 2px 14px;padding-left:1.1em;border-left:2px solid var(--ln)}
+.mmx-t li{margin:6px 0}
+.mmx-t li.cl>ul{display:none}
+.mmx-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mmx-tg{flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);cursor:pointer;padding:0;font-size:.9rem;line-height:1}
+.mmx-tg::before{content:"▾"}li.cl>.mmx-r>.mmx-tg::before{content:"▸"}
+.mmx-sp{flex:none;width:30px}
+.mmx-rel{font:italic 600 .78em var(--serif);color:var(--s);background:var(--card);border:1px dashed var(--s);border-radius:99px;padding:1px 9px;white-space:nowrap}
+.mmx-n{display:inline-flex;align-items:baseline;gap:7px;text-align:left;border:2px solid var(--ln);background:var(--card);color:var(--ink);font:600 .92em/1.3 var(--serif);padding:.4em .75em;cursor:pointer;border-radius:8px}
+.mmx-n i{font:700 .66em var(--serif);font-style:normal;letter-spacing:.05em;color:var(--mut);border:1.5px solid currentColor;border-radius:4px;padding:0 4px}
+.mmx-n.l1{background:var(--p);border-color:var(--p);color:#fff;font-size:1.05em}.mmx-n.l1 i{color:#fff}
+.mmx-n.l2{border-color:var(--p)}.mmx-n.l2 i{color:var(--p)}
+.mmx-n.l3{border-color:var(--s)}.mmx-n.l3 i{color:var(--s)}
+.mmx-n.l4{font-weight:500}
+.mmx-n.on{box-shadow:0 0 0 3px var(--s)}
+.mmx-dt{border:1px solid var(--ln);border-left:4px solid var(--s);background:var(--card);padding:10px 14px;margin-top:10px;min-height:56px}
+.mmx-dt h4{margin:0 0 4px;font:700 1rem var(--serif);color:var(--p)}
+.mmx-dt p{margin:4px 0}.mmx-dt .h{color:var(--mut);font-style:italic}.mmx-dt .pth{font-size:.8rem;color:var(--mut)}
+.mmx h3.mmh{font:700 1.15rem var(--serif);color:var(--p);margin:18px 0 8px}
+.mmx table{width:100%;border-collapse:collapse;font-size:.92rem}
+.mmx th{background:var(--p);color:#fff;font:700 .78rem var(--serif);padding:8px;text-align:left}
+.mmx td{padding:8px;border-bottom:1px solid var(--ln);vertical-align:top;white-space:normal}
+.mmx td:first-child{font-weight:700;color:var(--p)}
+.mmx td.rl{color:var(--s);font-style:italic;font-weight:600}
+.mmx .sc{overflow-x:auto}
+</style>
+<style id="fcx-css">
+.fcx{font-family:var(--serif)}
+.fcx-lv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+.fcx-lb{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px;border:1.5px solid var(--ln);border-left:5px solid var(--s);background:var(--card);color:var(--ink);cursor:pointer;font:inherit;border-radius:4px;min-height:56px}
+.fcx-lb b{color:var(--p);font-size:1rem}.fcx-lb span{font-size:.82rem;color:var(--mut)}
+.fcx-lb.on{background:var(--p);border-color:var(--p);border-left-color:var(--s)}.fcx-lb.on b,.fcx-lb.on span{color:#fff}
+.fcx button:focus-visible,.fcx [tabindex]:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+.fcx-pr{display:flex;justify-content:space-between;gap:8px;font-size:.92rem;margin-bottom:4px}
+.fcx-bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden;margin-bottom:12px}.fcx-bar i{display:block;height:100%;width:0;background:var(--s);transition:width .25s}
+.fcx-sc{perspective:1100px;height:clamp(300px,58vh,440px);cursor:pointer;margin:8px 0}
+.fcx-in{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.fcx-sc.f .fcx-in{transform:rotateY(180deg)}
+.fcx-fa,.fcx-fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px;padding:22px;overflow:auto}
+.fcx-fa{background:var(--p);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-bottom:6px solid var(--s);font:700 clamp(1.1rem,3.2vw,1.45rem)/1.4 var(--serif)}
+.fcx-fa small{font:600 .75rem var(--serif);letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-bottom:12px}
+.fcx-fa em{font:italic .85rem var(--serif);opacity:.75;margin-top:16px;font-weight:400}
+.fcx-fb{background:var(--card);border:1px solid var(--ln);border-top:6px solid var(--s);transform:rotateY(180deg);text-align:left;font-size:1rem;line-height:1.55}
+.fcx-fb .fcx-tg{font:700 .72rem var(--serif);text-transform:uppercase;letter-spacing:.07em;color:var(--s);margin:12px 0 2px}.fcx-fb .fcx-tg:first-child{margin-top:0}
+.fcx-fb .a{font-weight:700;color:var(--ink)}.fcx-fb .x{color:var(--mut)}
+.fcx-bt{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fcx-b{border:0;background:var(--p);color:#fff;padding:10px 18px;min-height:44px;border-radius:4px;font:600 .95rem var(--serif);cursor:pointer}
+.fcx-b.g{background:var(--card);color:var(--ink);border:1.5px solid var(--ln)}
+.fcx-b:disabled{opacity:.4;cursor:default}
+@media(max-width:520px){.fcx-lv{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.fcx-in{transition:none}}
+</style>
+<style id="qzx-css">
+.qzx{font-family:var(--serif)}
+.qzx-lv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+.qzx-lb{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px;border:1.5px solid var(--ln);border-left:5px solid var(--s);background:var(--card);color:var(--ink);cursor:pointer;font:inherit;border-radius:4px;min-height:56px}
+.qzx-lb b{color:var(--p);font-size:1rem}.qzx-lb span{font-size:.82rem;color:var(--mut)}
+.qzx-lb.on{background:var(--p);border-color:var(--p);border-left-color:var(--s)}.qzx-lb.on b,.qzx-lb.on span{color:#fff}
+.qzx button:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+.qzx-pr{display:flex;justify-content:space-between;gap:8px;font-size:.92rem;margin-bottom:4px;flex-wrap:wrap}
+.qzx-bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden;margin-bottom:10px}.qzx-bar i{display:block;height:100%;width:0;background:var(--s);transition:width .25s}
+.qzx-dots{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 12px}
+.qzx-dots button{width:34px;height:34px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);font:600 .8rem var(--serif);cursor:pointer;border-radius:4px;padding:0}
+.qzx-dots button.cur{border-color:var(--p);box-shadow:0 0 0 2px var(--p)}
+.qzx-dots button.ok{background:color-mix(in srgb,var(--ok) 22%,var(--card));border-color:var(--ok)}
+.qzx-dots button.no{background:color-mix(in srgb,var(--bad) 20%,var(--card));border-color:var(--bad)}
+.qzx-q{background:var(--paper);border:1px solid var(--ln);border-top:4px solid var(--p);padding:16px clamp(12px,2.5vw,22px)}
+.qzx-q small{display:block;font:600 .78rem var(--serif);color:var(--mut);margin-bottom:6px;letter-spacing:.03em}
+.qzx-q h3{margin:0 0 12px;font:700 clamp(1.05rem,2.8vw,1.25rem)/1.4 var(--serif);color:var(--ink);border:0;padding:0;font-variant:normal;letter-spacing:0}
+.qzx-o{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;margin:8px 0;padding:12px 14px;min-height:48px;border:1.5px solid var(--ln);border-radius:6px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit;line-height:1.45}
+.qzx-o b{flex:none;width:1.7em;height:1.7em;border:1.5px solid var(--p);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--p);font-size:.85rem}
+.qzx-o.sel{border-color:var(--p);background:color-mix(in srgb,var(--p) 8%,var(--card));box-shadow:0 0 0 2px var(--p)}
+.qzx-o.sel b{background:var(--p);color:#fff}
+.qzx-o.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--card));box-shadow:none}.qzx-o.ok b{background:var(--ok);border-color:var(--ok);color:#fff}
+.qzx-o.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--card));box-shadow:none}.qzx-o.no b{background:var(--bad);border-color:var(--bad);color:#fff}
+.qzx-o:disabled{cursor:default}
+.qzx-fb{border-left:4px solid var(--s);background:var(--card);padding:10px 14px;margin:12px 0}
+.qzx-fb.ok{border-left-color:var(--ok)}.qzx-fb.no{border-left-color:var(--bad)}
+.qzx-fb .st{font-weight:700}.qzx-fb.ok .st{color:var(--ok)}.qzx-fb.no .st{color:var(--bad)}
+.qzx-fb p{margin:4px 0}
+.qzx-bt{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.qzx-b{border:0;background:var(--p);color:#fff;padding:10px 18px;min-height:44px;border-radius:4px;font:600 .95rem var(--serif);cursor:pointer}
+.qzx-b.g{background:var(--card);color:var(--ink);border:1.5px solid var(--ln)}
+.qzx-b:disabled{opacity:.4;cursor:default}
+.qzx-sm{background:var(--paper);border:1px solid var(--ln);border-top:4px solid var(--ok);padding:16px 20px}
+.qzx-sm h3{margin:0 0 6px;border:0;padding:0;font:700 1.3rem var(--serif);color:var(--p)}
+@media(max-width:520px){.qzx-lv{grid-template-columns:1fr}}
+
+.stx{font-family:var(--serif)}
+.stx-intro{color:var(--mut);margin:0 0 12px;max-width:68ch}
+.stx-chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+.stx-c{border:1.5px solid var(--ln);background:var(--paper,#fff);color:var(--ink);border-radius:99px;padding:7px 13px;min-height:38px;font:600 .86rem var(--serif);cursor:pointer}
+.stx-c i{font-style:normal;color:var(--mut);font-weight:500;margin-left:2px}
+.stx-c.on{background:var(--p);border-color:var(--p);color:#fff}.stx-c.on i{color:#f3d9d4}
+.stx-card{background:var(--paper,#fff);border:1px solid var(--ln);border-top:4px solid var(--p);margin:0 0 18px;padding:14px clamp(12px,2.5vw,22px) 16px}
+.stx-card[hidden]{display:none}
+.stx-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.stx-h h3{margin:0;font:700 1.25rem var(--serif);color:var(--p);border:0;padding:0;letter-spacing:0;font-variant:normal}
+.stx-bd{font:600 .74rem var(--serif);color:var(--mut);background:var(--bg);border:1px solid var(--ln);border-radius:99px;padding:2px 10px}
+.stx-src{font-size:.84rem;color:var(--mut);margin:2px 0 10px;font-style:italic}
+.stx-fig{position:relative;overflow-x:auto;background:#fff;border:1px solid var(--ln);padding:10px;-webkit-overflow-scrolling:touch}
+.stx-in svg{display:block;width:100%;height:auto;max-height:520px;margin:auto}
+
+.stx-tb{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 8px}
+.stx-hint{font:600 .8rem var(--serif);color:var(--s)}
+.stx-zb{border:1.5px solid var(--ln);background:var(--paper,#fff);color:var(--ink);border-radius:99px;padding:5px 12px;min-height:34px;font:600 .8rem var(--serif);cursor:pointer}
+.hs{fill:rgba(200,69,47,.05);stroke:#c8452f;stroke-opacity:.6;stroke-width:1.1;stroke-dasharray:4 3;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .15s,stroke-opacity .15s}
+.hs:hover,.hs.hv{fill:rgba(200,69,47,.2);stroke-opacity:1}
+.hs.on{fill:rgba(122,21,39,.26);stroke:#7a1527;stroke-opacity:1;stroke-dasharray:none;stroke-width:2.2}
+.hs-layer.dim .hs:not(.on){stroke-opacity:.3}
+.stx-ex{margin:10px 0 8px;border-left:4px solid var(--s);background:var(--bg);padding:10px 14px;min-height:64px}
+.stx-ex h4{margin:0 0 3px;font:700 1.02rem var(--serif);color:var(--p)}
+.stx-ex p{margin:0;font-size:.97rem}
+.stx-ex.idle{color:var(--mut);border-left-style:dashed;font-style:italic}
+.stx-pl{display:flex;flex-wrap:wrap;gap:6px}
+.stx-pb{border:1.5px solid var(--ln);background:var(--paper,#fff);color:var(--ink);border-radius:99px;padding:5px 11px;min-height:34px;font:600 .8rem var(--serif);cursor:pointer;text-align:left}
+.stx-pb.on{background:var(--p);border-color:var(--p);color:#fff}
+.stx-pb:focus-visible,.stx-zb:focus-visible{outline:3px solid var(--s);outline-offset:2px}
+@keyframes stxp{0%,100%{fill:rgba(200,69,47,.05)}50%{fill:rgba(200,69,47,.3)}}
+.stx-card.pulse .hs:not(.on){animation:stxp 1.2s ease-in-out 2}
+@media(prefers-reduced-motion:reduce){.stx-card.pulse .hs{animation:none}}
+.stx-cap{font-size:.86rem;color:var(--mut);margin:10px 0 6px;font-style:italic}
+.stx-kp{margin:0;border-left:4px solid var(--s);background:var(--bg);padding:9px 12px;font-size:.95rem}
+.stx-kp b{color:var(--p)}
+.stx-ov{position:fixed;inset:0;z-index:50;background:rgba(30,10,14,.72);display:flex;align-items:center;justify-content:center;padding:14px}
+.stx-ov[hidden]{display:none}
+.stx-ovb{background:#fff;width:min(1200px,100%);max-height:100%;display:flex;flex-direction:column;border-top:4px solid var(--p)}
+.stx-ovh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--ln);font-family:var(--serif);color:var(--p)}
+.stx-x{border:1.5px solid var(--ln);background:#fff;color:var(--ink);width:40px;height:40px;font-size:1.05rem;cursor:pointer}
+.stx-ovc{overflow:auto;padding:14px;flex:1}
+.stx-ovc svg{display:block;width:100%;min-width:640px;height:auto;max-height:62vh}
+.stx-ovc .stx-fig{border:0;padding:0}.stx-ovc .stx-in{min-width:0!important}
+@media print{.stx-chips,.stx-tb,.stx-pl,.stx-ov{display:none!important}.stx-card{break-inside:avoid}.stx-fig{overflow:visible}.stx-in{min-width:0!important}}
+</style>
+</head><body>
+<header class="hero"><svg class="waves" viewBox="0 0 1400 400" preserveAspectRatio="none" aria-hidden="true"><path d="M0 300 C 250 230, 450 230, 700 280 S 1150 320, 1400 240" fill="none" stroke="#f0b3a8" stroke-opacity=".22" stroke-width="1.5"/><path d="M0 350 C 300 300, 600 330, 800 310 S 1200 290, 1400 330" fill="none" stroke="#f0b3a8" stroke-opacity=".16" stroke-width="1.5"/></svg>
+<div class="hero-in"><div class="hero-tx"><h1>Study<br><em>Smart.</em></h1><a class="ct" dir="ltr" href="https://t.me/Study_smart5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="#29A9EB" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span>Contact</span> <b dir="ltr">@Study_smart5</b></a></div>
+</div></header>
+<nav role="tablist" id="nav"></nav>
+<main>
+<section id="s0"><h2>Overview</h2>
+<div class="ovx" id="ov">
+<div class="ovx-view" id="ovx-road">
+<div class="ovx-hero">
+<p class="ovx-eyebrow">Study Roadmap</p>
+<h3 class="ovx-title">Cardiovascular system</h3>
+<p class="ovx-sub">Vascular Disorders · Vessel Wall · Atherosclerosis</p>
+<p class="ovx-lead">This lecture covers the two principal mechanisms of vascular disease, the normal histology and anatomy of the vessel wall, the classification of arteries, and atherosclerosis: its definition, plaque, target arteries, consequences, risk factors, and pathogenesis by the response to injury hypothesis, including endothelial injury and the five stages of atherogenesis.</p>
+<div class="ovx-prog" aria-live="polite"><div class="ovx-pt"><b id="ovx-pc">0 of 7 units marked complete</b><span id="ovx-pp">0%</span></div><div class="ovx-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ovx-bar"><i id="ovx-bi"></i></div><p class="ovx-hint" id="ovx-sv">Tick “Mark as complete” at the end of a unit. Opening a unit does not count as completing it.</p></div>
+</div>
+<h4 class="ovx-h4">Learning units <span class="ovx-cnt">7 units</span></h4>
+<ol class="ovx-map" id="ovx-map"></ol>
+</div>
+
+<div class="ovx-shell" id="ovx-shell" hidden>
+<aside class="ovx-side"><details class="ovx-idx" id="ovx-idx"><summary>Unit index</summary><nav id="ovx-nav" aria-label="Overview index"></nav></details></aside>
+<div class="ovx-main" id="ovx-main">
+
+<!-- UNIT 1 -->
+<article class="ovx-unit" id="ovx-u1" data-title="Vascular Disease: Introduction" hidden>
+<p class="ovx-eyebrow">Unit 1 of 7</p>
+<h3 class="ovx-title">Vascular Disease: Introduction</h3>
+<p class="ovx-core"><b>Core idea:</b> Vascular disorders cause more morbidity and mortality than any other category of human diseases, through two principal mechanisms: narrowing/obstruction of lumens and weakening of vessel walls.</p>
+
+<h4 class="ovx-h4" id="ovx-u1-1">1. Importance of vascular disorders</h4>
+<p>Vascular disorders are responsible for more morbidity and mortality than any other category of human diseases.</p>
+
+<h4 class="ovx-h4" id="ovx-u1-2">2. Two principal mechanisms of vascular disease</h4>
+<p>Two main principal mechanisms underlie vascular disease:</p>
+<details class="ovx-d" open><summary>The two mechanisms <span class="ovx-cnt">2 rows</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Mechanism</th><th>Description</th><th>Examples</th></tr></thead><tbody>
+<tr><td>1. Narrowing (stenosis) or complete obstruction of vessel lumens</td><td><b>Progressively</b> — e.g., by atherosclerosis.<br><b>Abruptly</b> — e.g., by thrombosis or embolism.</td><td>Atherosclerosis; thrombosis; embolism</td></tr>
+<tr><td>2. Weakening of vessel walls</td><td>Leading to dilation or rupture.</td><td>Aneurysm, dissection</td></tr>
+</tbody></table></div></details>
+<p class="ovx-kp"><b>Key point.</b> Lumen problem (stenosis / obstruction) vs wall problem (weakening → dilation or rupture).</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Vascular disorders → more morbidity and mortality than any other category of human diseases.</li>
+<li>Mechanism 1: narrowing (stenosis) or complete obstruction — progressively (atherosclerosis) or abruptly (thrombosis or embolism).</li>
+<li>Mechanism 2: weakening of vessel walls → dilation or rupture (aneurysm, dissection).</li></ul></div>
+</article>
+
+<!-- UNIT 2 -->
+<article class="ovx-unit" id="ovx-u2" data-title="Normal Histology and Anatomy of the Vessel Wall" hidden>
+<p class="ovx-eyebrow">Unit 2 of 7</p>
+<h3 class="ovx-title">Normal Histology and Anatomy of the Vessel Wall</h3>
+<p class="ovx-core"><b>Core idea:</b> The blood-vessel wall is built from cells (ECs and SMCs) and extracellular matrix, arranged into three layers from lumen to outside: intima, media and adventitia.</p>
+
+<h4 class="ovx-h4" id="ovx-u2-1">1. Basic components of the wall</h4>
+<p>Basic components of the wall of blood vessels include:</p>
+<ol class="ovx-ro"><li><b>Endothelial Cells (ECs)</b> and <b>smooth Muscle Cells (SMCs)</b>.</li>
+<li><b>Extracellular Matrix (ECM)</b>.</li></ol>
+
+<h4 class="ovx-h4" id="ovx-u2-2">2. The three layers (from lumen to outside)</h4>
+<p>These components are arranged into three layers (from lumen to outside):</p>
+<ol class="ovx-flow"><li><b>Intima</b><br>single layer of endothelial cells</li><li><b>Media</b><br>smooth muscle cells</li><li><b>Adventitia</b><br>connective tissue, vasa vasorum, nerve fibers</li></ol>
+<details class="ovx-d" open><summary>Layers and their composition <span class="ovx-cnt">3 layers</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Layer</th><th>Label in figure</th><th>Consists of</th></tr></thead><tbody>
+<tr><td>Intima (innermost, next to lumen)</td><td>Tunica intima</td><td>Single layer of endothelial cells.</td></tr>
+<tr><td>Media</td><td>Tunica media</td><td>Smooth muscle cells.</td></tr>
+<tr><td>Adventitia (outermost)</td><td>Tunica externa</td><td>Connective tissue, Vasa Vasorum, and nerve fibers.</td></tr>
+</tbody></table></div>
+<p class="ovx-fig"><b>Figure — The Structure of an Artery Wall.</b> Labels: Tunica intima, Tunica media, Tunica externa; Endothelium; Internal elastic membrane; Smooth muscle; External elastic membrane.</p></details>
+<p class="ovx-kp"><b>Key point.</b> From lumen outward: Intima (endothelium) → Media (smooth muscle) → Adventitia (connective tissue, vasa vasorum, nerves).</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Components: ECs + SMCs, and ECM.</li>
+<li>Intima = single layer of endothelial cells · Media = smooth muscle cells · Adventitia = connective tissue, vasa vasorum, nerve fibers.</li>
+<li>Figure labels: tunica intima / media / externa; endothelium; internal and external elastic membranes; smooth muscle.</li></ul></div>
+</article>
+
+<!-- UNIT 3 -->
+<article class="ovx-unit" id="ovx-u3" data-title="Classification of Arteries" hidden>
+<p class="ovx-eyebrow">Unit 3 of 7</p>
+<h3 class="ovx-title">Classification of Arteries</h3>
+<p class="ovx-core"><b>Core idea:</b> According to their size &amp; structure, arteries are classified into large (elastic), medium-sized (muscular), and small arteries and arterioles.</p>
+
+<h4 class="ovx-h4" id="ovx-u3-1">1. Three classes of arteries</h4>
+<p>According to their size &amp; structure, arteries can be classified into the following:</p>
+<details class="ovx-d" open><summary>Classes, examples and media <span class="ovx-cnt">3 classes</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Class</th><th>Examples / size</th><th>Media</th></tr></thead><tbody>
+<tr><td>(1) Large or elastic arteries</td><td>The aorta, the major branches of the aorta (subclavian, common carotid, and iliac), and pulmonary arteries.</td><td>Elastic fiber-rich media (arranged in layers of lamellar units of elastin fibers and SMCs like tree rings).</td></tr>
+<tr><td>(2) Medium-sized or muscular arteries</td><td>Smaller branches of the aorta (e.g., coronary and renal arteries).</td><td>Composed predominantly of SMC.</td></tr>
+<tr><td>(3) Small arteries and arterioles</td><td>Small arteries <b>(≤2 mm in diameter)</b> and arterioles <b>(20 to 100 µm in diameter)</b> within tissues and organs.</td><td>Consists of smooth muscles; their contraction causes changes in diameter that regulate systemic arterial blood pressure.</td></tr>
+</tbody></table></div></details>
+
+<h4 class="ovx-h4" id="ovx-u3-2">2. Arterioles and blood pressure</h4>
+<p>The media of small arteries and arterioles consists of smooth muscles, and their contraction causes changes in diameter that regulate systemic arterial blood pressure.</p>
+<p class="ovx-kp"><b>Key point.</b> So the arterioles are the principals' points of physiologic resistance (control the blood pressure).</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Elastic: aorta, subclavian, common carotid, iliac, pulmonary — elastic fiber-rich media (lamellar units like tree rings).</li>
+<li>Muscular: coronary, renal — media predominantly SMC.</li>
+<li>Small arteries ≤2 mm; arterioles 20–100 µm — smooth-muscle contraction regulates systemic arterial blood pressure; arterioles = main points of physiologic resistance.</li></ul></div>
+</article>
+
+<!-- UNIT 4 -->
+<article class="ovx-unit" id="ovx-u4" data-title="Atherosclerosis: Definition, Targets and Consequences" hidden>
+<p class="ovx-eyebrow">Unit 4 of 7</p>
+<h3 class="ovx-title">Atherosclerosis: Definition, Targets and Consequences</h3>
+<p class="ovx-core"><b>Core idea:</b> Atherosclerosis is thickening/hardening of arteries due to atheromatous plaque in the inner lining; it targets vital arteries, causing roughly half of all deaths.</p>
+
+<h4 class="ovx-h4" id="ovx-u4-1">1. Definition</h4>
+<p>Atherosclerosis is the thickening or hardening of the arteries caused by a buildup of atheromatous plaque (atheroma) in the inner lining of an artery.</p>
+
+<h4 class="ovx-h4" id="ovx-u4-2">2. Importance and target arteries</h4>
+<p>This disease is responsible for more deaths and serious complications than any other disorder <b>(roughly half of all deaths)</b>. This is because its prime targets are vital arteries, namely the coronaries, cerebral arteries, the aorta.</p>
+<details class="ovx-d" open><summary>Arteries primarily affected <span class="ovx-cnt">2 types</span></summary>
+<p>Atherosclerosis is “a disease primarily of large elastic arteries (aorta, carotid, and the iliac arteries) and medium-sized muscular arteries (coronaries and popliteal arteries).</p>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Artery type</th><th>Examples affected</th></tr></thead><tbody>
+<tr><td>Large elastic arteries</td><td>Aorta, carotid, iliac arteries</td></tr>
+<tr><td>Medium-sized muscular arteries</td><td>Coronaries, popliteal arteries</td></tr>
+</tbody></table></div></details>
+
+<h4 class="ovx-h4" id="ovx-u4-3">3. Atheromatous plaque</h4>
+<p>Atheromatous plaques are raised lesions composed of soft grumous lipid cores (mainly cholesterol and cholesterol esters, with necrotic debris) covered by fibrous caps.</p>
+<details class="ovx-d" open><summary>Plaque composition <span class="ovx-cnt">2 parts</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Part</th><th>Composition</th></tr></thead><tbody>
+<tr><td>Core</td><td>Soft grumous lipid core — mainly cholesterol and cholesterol esters, with necrotic debris.</td></tr>
+<tr><td>Cover</td><td>Fibrous cap.</td></tr>
+</tbody></table></div>
+<p class="ovx-fig"><b>Figure — Normal vs narrowed artery.</b> Left: Artery with normal blood flow. Right: Artery narrowed by atherosclerosis — blood flow reduced by plaque.</p></details>
+
+<h4 class="ovx-h4" id="ovx-u4-4">4. Major consequences</h4>
+<p>Its major consequences are:</p>
+<ol class="ovx-ro"><li><b>Myocardial infarction</b> (alone responsible for <b>about 25% of all deaths</b>).</li>
+<li><b>Cerebral infarction</b>.</li>
+<li><b>Aortic aneurysm</b>.</li></ol>
+<p class="ovx-kp"><b>Key point.</b> Atherosclerosis ≈ half of all deaths; myocardial infarction alone ≈ 25% of all deaths.</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Definition: thickening or hardening of arteries from atheromatous plaque (atheroma) in the inner lining.</li>
+<li>Prime targets: coronaries, cerebral arteries, aorta → roughly half of all deaths.</li>
+<li>Primarily large elastic (aorta, carotid, iliac) and medium-sized muscular (coronaries, popliteal) arteries.</li>
+<li>Plaque: raised lesion; soft grumous lipid core (cholesterol, cholesterol esters, necrotic debris) + fibrous cap.</li>
+<li>Consequences: myocardial infarction (~25% of all deaths), cerebral infarction, aortic aneurysm.</li></ul></div>
+</article>
+
+<!-- UNIT 5 -->
+<article class="ovx-unit" id="ovx-u5" data-title="Risk Factors" hidden>
+<p class="ovx-eyebrow">Unit 5 of 7</p>
+<h3 class="ovx-title">Risk Factors</h3>
+<p class="ovx-core"><b>Core idea:</b> Risk factors are nonmodifiable (constitutional) or modifiable.</p>
+
+<h4 class="ovx-h4" id="ovx-u5-1">1. Nonmodifiable vs modifiable risk factors</h4>
+<details class="ovx-d" open><summary>Risk factor groups <span class="ovx-cnt">2 groups</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Group</th><th>Risk factors</th></tr></thead><tbody>
+<tr><td>Nonmodifiable (constitutional)</td><td>Genetic abnormalities, family history, increase age, male gender</td></tr>
+<tr><td>Modifiable</td><td>Hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation</td></tr>
+</tbody></table></div></details>
+<p class="ovx-kp"><b>Key point.</b> Nonmodifiable = 4 (genetic abnormalities, family history, increase age, male gender) · Modifiable = 5 (hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation).</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Nonmodifiable (constitutional): genetic abnormalities, family history, increase age, male gender.</li>
+<li>Modifiable: hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation.</li></ul></div>
+</article>
+
+<!-- UNIT 6 -->
+<article class="ovx-unit" id="ovx-u6" data-title="Pathogenesis: Response to Injury Hypothesis" hidden>
+<p class="ovx-eyebrow">Unit 6 of 7</p>
+<h3 class="ovx-title">Pathogenesis: Response to Injury Hypothesis</h3>
+<p class="ovx-core"><b>Core idea:</b> The most widely accepted theory — the response to injury hypothesis — views atherosclerosis as a chronic inflammatory and healing response of the arterial wall to endothelial injury.</p>
+
+<h4 class="ovx-h4" id="ovx-u6-1">1. Historical theories of atherogenesis</h4>
+<p>Historically, there have been two dominant theories regarding atherogenesis:</p>
+<details class="ovx-d" open><summary>Two historical theories <span class="ovx-cnt">2 theories</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Theory</th><th>Focus</th></tr></thead><tbody>
+<tr><td>The first</td><td>An intimal cellular proliferation in response to endothelial injury.</td></tr>
+<tr><td>The other</td><td>Repeated formation and organization of thrombi.</td></tr>
+</tbody></table></div></details>
+
+<h4 class="ovx-h4" id="ovx-u6-2">2. The response to injury hypothesis</h4>
+<p>The most widely accepted theory of pathogenesis is called the <b>response to injury hypothesis</b>. This theory incorporates elements of both theories and also integrates the risk factors.</p>
+<p>This theory states that atherosclerosis is a <b>chronic inflammatory and healing response of the arterial wall to endothelial injury</b>.</p>
+
+<h4 class="ovx-h4" id="ovx-u6-3">3. According to this model, atherosclerosis results from the following</h4>
+<ol class="ovx-ro">
+<li>Endothelial injury—and resultant endothelial dysfunction—leading to increased permeability, leukocyte adhesion, and thrombosis.</li>
+<li>Accumulation of lipoproteins (mainly oxidized LDL and cholesterol crystals) in the vessel wall.</li>
+<li>Platelet adhesion.</li>
+<li>Monocyte adhesion to the endothelium, migration into the intima, and differentiation into macrophages and foam cells.</li>
+<li>Lipid accumulation within macrophages, which release inflammatory cytokines.</li>
+<li>Smooth muscle cell recruitment due to factors released from activated platelets, macrophages, and vascular wall cells.</li>
+<li>Smooth muscle cell proliferation and ECM production.</li></ol>
+<details class="ovx-d"><summary>Figure — Atherosclerosis progression <span class="ovx-cnt">labels</span></summary>
+<p class="ovx-fig"><b>Figure — Atherosclerosis progression.</b> Layers shown: Lumen, Intima, Media. LDL in the lumen enters the intima; m-LDL with ↑ SMase (SM → Cer) undergoes aggregation. Monocytes enter the intima and become macrophages, which take up the aggregated lipid and become foam cells. Foam cells lead to plaque formation, with stenosis of the lumen.</p></details>
+<p class="ovx-kp"><b>Key point.</b> Response to injury = both historical theories + the risk factors; atherosclerosis = chronic inflammatory and healing response to endothelial injury.</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Old theories: intimal cellular proliferation in response to endothelial injury; repeated formation and organization of thrombi.</li>
+<li>Response to injury hypothesis: most widely accepted; combines both theories and integrates risk factors.</li>
+<li>Results from: endothelial injury/dysfunction, lipoprotein accumulation (oxidized LDL, cholesterol crystals), platelet adhesion, monocyte adhesion → macrophages and foam cells, lipid in macrophages → cytokines, SMC recruitment, SMC proliferation and ECM production.</li></ul></div>
+</article>
+
+<!-- UNIT 7 -->
+<article class="ovx-unit" id="ovx-u7" data-title="Endothelial Injury and Stages of Atherogenesis" hidden>
+<p class="ovx-eyebrow">Unit 7 of 7</p>
+<h3 class="ovx-title">Endothelial Injury and Stages of Atherogenesis</h3>
+<p class="ovx-core"><b>Core idea:</b> Endothelial injury is the cornerstone of the response to injury hypothesis; the response proceeds in five stages ending in a well-developed plaque.</p>
+
+<h4 class="ovx-h4" id="ovx-u7-1">1. Endothelial injury</h4>
+<ul class="ovx-ro">
+<li>Endothelial cell injury is the cornerstone of the response to injury hypothesis.</li>
+<li>Endothelial cell loss due to any kind of injury.</li>
+<li>Suspected triggers of early atheromatous lesions include hypertension, hyperlipidemia, toxins from cigarette smoke, homocysteine, and even infectious agents.</li>
+<li>Inflammatory cytokines (e.g., tumor necrosis factor [TNF]) also can stimulate proatherogenic patterns of endothelial cell gene expression.</li></ul>
+
+<h4 class="ovx-h4" id="ovx-u7-2">2. The most important causes of endothelial injury</h4>
+<ol class="ovx-ro"><li>Hemodynamic disturbances</li><li>Hypercholesterolemia</li><li>Inflammation</li></ol>
+
+<h4 class="ovx-h4" id="ovx-u7-3">3. Response to injury in atherogenesis — five stages</h4>
+<ol class="ovx-flow"><li><b>1</b><br>Normal</li><li><b>2</b><br>Endothelial injury</li><li><b>3</b><br>Migration &amp; macrophage activation</li><li><b>4</b><br>Lipid uptake</li><li><b>5</b><br>Well-developed plaque</li></ol>
+<details class="ovx-d" open><summary>Stages with figure labels <span class="ovx-cnt">5 stages</span></summary>
+<div class="sc"><table class="ovx-t"><thead><tr><th>Stage</th><th>Lecture text</th><th>Figure labels</th></tr></thead><tbody>
+<tr><td>1</td><td>Normal.</td><td>Normal wall: Endothelium, Intima, Media, Adventitia. Chronic endothelial ‘injury’: *Hyperlipidemia *Hypertension *Smoking *Homocysteine *Hemodynamic factors *Toxins *Viruses *Immune reactions → Response to injure.</td></tr>
+<tr><td>2</td><td>Endothelial injury with monocyte and platelet adhesion.</td><td>Endothelial dysfunction (e.g., increased permeability, leukocyte adhesion), monocyte adhesion and emigration. Platelet; Monocyte.</td></tr>
+<tr><td>3</td><td>Monocyte and smooth muscle cell migration into the intima, with macrophage activation.</td><td>Macrophage activation, smooth muscle recruitment. Smooth muscle cell; Fatty streak.</td></tr>
+<tr><td>4</td><td>Macrophage and smooth muscle cell uptake of modified lipids and further activation.</td><td>Macrophages and smooth muscle cells engulf lipid. Lymphocyte; Fibrofatty atheroma.</td></tr>
+<tr><td>5</td><td>Intimal smooth muscle cell proliferation with ECM elaboration, forming a well-developed plaque.</td><td>Smooth muscle proliferation, collagen and other ECM deposition, extracellular lipid. Lymphocyte; Lipid debris; Collagen.</td></tr>
+</tbody></table></div></details>
+<p class="ovx-kp"><b>Key point.</b> Normal → endothelial injury (monocyte + platelet adhesion) → migration into intima + macrophage activation → uptake of modified lipids → SMC proliferation + ECM = well-developed plaque.</p>
+
+<div class="ovx-qr"><h4>Quick Review</h4><ul>
+<li>Endothelial cell injury = cornerstone of the response to injury hypothesis; endothelial cell loss due to any kind of injury.</li>
+<li>Suspected triggers: hypertension, hyperlipidemia, toxins from cigarette smoke, homocysteine, infectious agents; TNF can stimulate proatherogenic endothelial gene expression.</li>
+<li>Most important causes: hemodynamic disturbances, hypercholesterolemia, inflammation.</li>
+<li>Figure stages: fatty streak (stage 3) → fibrofatty atheroma (stage 4) → collagen, lipid debris (stage 5).</li></ul></div>
+</article>
+
+<div class="ovx-foot" id="ovx-foot">
+<label class="ovx-done"><input type="checkbox" id="ovx-chk"> <span>Mark this unit as complete</span></label>
+<div class="ovx-btns">
+<button type="button" class="ovx-b" id="ovx-prev">← Previous unit</button>
+<button type="button" class="ovx-b ovx-g" id="ovx-road-b">Study Roadmap</button>
+<button type="button" class="ovx-b ovx-g" id="ovx-top">↑ Top of unit</button>
+<button type="button" class="ovx-b ovx-g" id="ovx-tgl">Collapse details</button>
+<button type="button" class="ovx-b" id="ovx-next">Next unit →</button>
+</div></div>
+</div></div>
+</div>
+</section>
+<section id="s1"><h2>Interactive Diagrams</h2><div class="dgx" id="dgs"></div></section>
+<section id="s2"><h2>Mini Map</h2><div class="mmx" id="mmx-root"></div></section>
+<section id="s3"><h2>Flash Cards</h2><div class="fcx" id="fcx-root"></div></section>
+<section id="s4"><h2>Quiz Bank</h2><div class="qzx" id="qzx-root"></div></section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+// tabs
+const names=["Overview","Interactive Diagrams","Mini Map","Flash Cards","Quiz Bank"];
+const ICO={"Overview": "<svg viewBox='0 0 24 24'><path d='M6 3h9l4 4v14H6z'/><path d='M9 11h7M9 15h7M9 7h3'/></svg>", "Interactive Diagrams": "<svg viewBox='0 0 24 24'><path d='M4 4v16h16'/><path d='M8 16v-5M12 16V8M16 16v-3'/></svg>", "Mini Map": "<svg viewBox='0 0 24 24'><circle cx='5' cy='6' r='2'/><circle cx='19' cy='6' r='2'/><circle cx='5' cy='18' r='2'/><circle cx='19' cy='18' r='2'/><circle cx='12' cy='12' r='2'/><path d='M7 7l3.5 3.5M17 7l-3.5 3.5M7 17l3.5-3.5M17 17l-3.5-3.5'/></svg>", "Flash Cards": "<svg viewBox='0 0 24 24'><rect x='3' y='6' width='18' height='12' rx='2'/><path d='M6 3h12'/></svg>", "Quiz Bank": "<svg viewBox='0 0 24 24'><circle cx='12' cy='12' r='9'/><path d='M8 12.5l3 3 5-6'/></svg>", "Structure": "<svg viewBox='0 0 24 24'><path d='M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z'/><path d='M12 8v-5M12 21v-5'/></svg>"};names.forEach((n,i)=>{const b=E("button","",(ICO[n]||"")+"<span>"+n+"</span>");b.setAttribute("role","tab");b.onclick=()=>go(i);$("#nav").append(b)});
+function go(i){document.querySelectorAll("section").forEach((s,k)=>s.classList.toggle("on",k==i));document.querySelectorAll("nav button").forEach((b,k)=>b.setAttribute("aria-selected",k==i))}
+go(0);
+// ===== Overview (Study Roadmap, units, progress) =====
+(function(){
+ const root=document.getElementById("ov");if(!root)return;
+ const q=(s,r)=>(r||root).querySelector(s),qa=(s,r)=>[...(r||root).querySelectorAll(s)];
+ const units=qa(".ovx-unit"),N=units.length;
+ const KEY="studysmart.overview.cardiovascular.done";
+ let done=new Set(),canSave=true,cur=-1;
+ try{const v=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(v))v.forEach(i=>{if(i>=0&&i<N)done.add(i)})}catch(e){canSave=false}
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify([...done]))}catch(e){canSave=false}};
+ const road=q("#ovx-road"),shell=q("#ovx-shell"),nav=q("#ovx-nav"),map=q("#ovx-map");
+ // roadmap cards
+ units.forEach((u,i)=>{
+  const li=document.createElement("li");li.dataset.i=i;
+  const subs=qa(".ovx-h4",u).map(h=>`<li><button type="button" data-u="${i}" data-t="${h.id}">${h.textContent}</button></li>`).join("");
+  li.innerHTML=`<span class="mn">Unit ${i+1}</span><span class="ck" hidden>✓</span><button type="button" class="mt" data-u="${i}">${u.dataset.title}</button><ul class="ms">${subs}</ul>`;
+  map.append(li);
+ });
+ // index
+ units.forEach((u,i)=>{
+  const b=document.createElement("button");b.type="button";b.dataset.u=i;b.innerHTML=`<span class="ck" hidden>✓</span>${i+1}. ${u.dataset.title}`;nav.append(b);
+  b._sub=[];qa(".ovx-h4",u).forEach(h=>{const s=document.createElement("button");s.type="button";s.className="sub";s.dataset.u=i;s.dataset.t=h.id;s.textContent=h.textContent;s.hidden=true;nav.append(s);b._sub.push(s)});
+ });
+ // back-to-roadmap link at top of each unit
+ units.forEach(u=>{const a=document.createElement("button");a.type="button";a.className="ovx-back";a.textContent="← Study Roadmap";a.onclick=()=>show(-1);u.prepend(a)});
+ function refresh(){
+  const n=done.size,p=N?Math.round(n/N*100):0;
+  q("#ovx-pc").textContent=`${n} of ${N} units marked complete`;q("#ovx-pp").textContent=p+"%";
+  q("#ovx-bi").style.width=p+"%";q("#ovx-bar").setAttribute("aria-valuenow",p);
+  q("#ovx-sv").textContent=canSave?"Tick “Mark as complete” at the end of a unit. Opening a unit does not count as completing it. Progress is saved in this browser only.":"Progress storage is unavailable here, so ticks last only until you leave or reload this page.";
+  qa("#ovx-map>li").forEach((li,i)=>{li.classList.toggle("dn",done.has(i));q(".ck",li).hidden=!done.has(i)});
+  qa("#ovx-nav>button:not(.sub)").forEach((b,i)=>{q(".ck",b).hidden=!done.has(i)});
+  if(cur>=0)q("#ovx-chk").checked=done.has(cur);
+ }
+ function show(i,target){
+  cur=i;
+  if(i<0){road.hidden=false;shell.hidden=true;refresh();window.scrollTo({top:Math.max(0,root.getBoundingClientRect().top+scrollY-70),behavior:"smooth"});return}
+  road.hidden=true;shell.hidden=false;
+  units.forEach((u,k)=>u.hidden=k!==i);
+  qa("#ovx-nav>button:not(.sub)").forEach((b,k)=>{b.classList.toggle("on",k===i);b._sub.forEach(s=>{s.hidden=k!==i;s.classList.remove("on")})});
+  q("#ovx-prev").disabled=i===0;q("#ovx-next").disabled=i===N-1;
+  q("#ovx-next").textContent=i===N-1?"Last unit":"Next unit →";
+  syncTgl();refresh();
+  const idx=q("#ovx-idx");if(innerWidth<=860)idx.open=false;
+  const t=target&&document.getElementById(target);
+  if(t){t.scrollIntoView({behavior:"smooth",block:"start"});markSub(target)}else{units[i].scrollIntoView({behavior:"smooth",block:"start"});markSub(null)}
+ }
+ function markSub(id){qa("#ovx-nav .sub").forEach(s=>s.classList.toggle("on",s.dataset.t===id))}
+ root.addEventListener("click",e=>{
+  const b=e.target.closest("button[data-u]");if(!b||!root.contains(b))return;
+  const i=+b.dataset.u;
+  if(i===cur&&b.dataset.t){const t=document.getElementById(b.dataset.t);t.scrollIntoView({behavior:"smooth",block:"start"});markSub(b.dataset.t)}
+  else show(i,b.dataset.t);
+ });
+ q("#ovx-prev").onclick=()=>show(cur-1);q("#ovx-next").onclick=()=>show(cur+1);
+ q("#ovx-road-b").onclick=()=>show(-1);
+ q("#ovx-top").onclick=()=>units[cur].scrollIntoView({behavior:"smooth",block:"start"});
+ q("#ovx-chk").onchange=e=>{e.target.checked?done.add(cur):done.delete(cur);save();refresh()};
+ // expand / collapse details (state kept per element while navigating)
+ const syncTgl=()=>{const ds=qa("details.ovx-d",units[cur]);q("#ovx-tgl").textContent=ds.every(d=>!d.open)?"Expand details":"Collapse details"};
+ q("#ovx-tgl").onclick=()=>{const ds=qa("details.ovx-d",units[cur]);const open=ds.every(d=>!d.open);ds.forEach(d=>d.open=open);syncTgl()};
+ root.addEventListener("toggle",e=>{if(cur>=0&&e.target.classList&&e.target.classList.contains("ovx-d"))syncTgl()},true);
+ // highlight current subheading while scrolling
+ window.addEventListener("scroll",()=>{if(cur<0)return;let id=null;qa(".ovx-h4",units[cur]).forEach(h=>{if(h.getBoundingClientRect().top<140)id=h.id});markSub(id)},{passive:true});
+ const mq=matchMedia("(min-width:861px)");q("#ovx-idx").open=mq.matches;
+ refresh();
+})();
+// ===== Interactive Diagrams (source: Cardiovascular system lecture only) =====
+(function(){
+ const host=document.getElementById("dgs");if(!host)return;
+ const T=(l,d,c,k,s)=>({l,d,c:c||[],k,s});
+ const D=[
+ {t:"Two Principal Mechanisms of Vascular Disease",ty:"Classification tree",src:"Cardiovascular system · Introduction",kind:"tree",
+  root:T("Vascular disease","Vascular disorders are responsible for more morbidity and mortality than any other category of human diseases. Two main principal mechanisms underlie vascular disease.",[
+   T("1. Narrowing or obstruction","<p>Narrowing (stenosis) or complete obstruction of vessel lumens.</p>",[
+     T("Progressively","e.g., by atherosclerosis."),
+     T("Abruptly","e.g., by thrombosis or embolism.")],"g"),
+   T("2. Weakening of vessel walls","<p>Leading to dilation or rupture.</p>",[
+     T("Aneurysm","Example of wall weakening.",[],"w"),
+     T("Dissection","Example of wall weakening.",[],"w")],"g")],"r")},
+
+ {t:"Layers of the Blood-Vessel Wall",ty:"Structure diagram",src:"Normal histology and anatomy",kind:"chains",
+  rows:[
+   {rt:"Basic components of the wall",it:[["Endothelial Cells (ECs)","cells","","g"],["—",""],["Smooth Muscle Cells (SMCs)","cells","","g"],["—",""],["Extracellular Matrix (ECM)","matrix","","g"]]},
+   {rt:"Arranged into three layers — from lumen to outside",it:[["Lumen"],["→",""],["Intima","Tunica intima","<p>Consists of a single layer of endothelial cells.</p><p>Figure labels nearby: Endothelium; Internal elastic membrane.</p>","r"],["→",""],["Media","Tunica media","<p>Consists of smooth muscle cells.</p><p>Figure labels: Smooth muscle; External elastic membrane.</p>","r"],["→",""],["Adventitia","Tunica externa","<p>Consists of connective tissue, Vasa Vasorum, and nerve fibers.</p>","r"]]}]},
+
+ {t:"Classification of Arteries",ty:"Classification tree",src:"Arteries classified according to their size & structure",kind:"tree",
+  root:T("Arteries","According to their size &amp; structure, arteries can be classified into three groups.",[
+   T("(1) Large or elastic arteries","<p>Having elastic fiber-rich media (arranged in layers of lamellar units of elastin fibers and SMCs like tree rings).</p>",[
+     T("Aorta",""),T("Major branches of the aorta","Subclavian, common carotid, and iliac."),T("Pulmonary arteries","")],"g"),
+   T("(2) Medium-sized or muscular arteries","<p>Smaller branches of the aorta. Their media is composed predominantly of SMC.</p>",[
+     T("Coronary arteries","Example."),T("Renal arteries","Example.")],"g"),
+   T("(3) Small arteries and arterioles","<p>Within tissues and organs. Their media consists of smooth muscles, and their contraction causes changes in diameter that regulate systemic arterial blood pressure.</p>",[
+     T("Small arteries","≤2 mm in diameter."),T("Arterioles","20 to 100 µm in diameter."),
+     T("Physiologic resistance","So the arterioles are the principals' points of physiologic resistance (control the blood pressure).",[],"o")],"g")],"r")},
+
+ {t:"Atherosclerosis: Plaque, Targets and Consequences",ty:"Cause-and-effect",src:"Atherosclerosis (definition, plaque, consequences)",kind:"chains",
+  rows:[
+   {rt:"Definition",it:[["Atheromatous plaque (atheroma)","in the inner lining of an artery"],["→","buildup causes"],["Thickening or hardening of the arteries","Atherosclerosis","","r"]]},
+   {rt:"Plaque composition",it:[["Soft grumous lipid core","mainly cholesterol and cholesterol esters, with necrotic debris","<p>Atheromatous plaques are raised lesions.</p>","g"],["—","covered by"],["Fibrous cap","","","g"]]},
+   {rt:"Arteries primarily affected",it:[["Large elastic arteries","aorta, carotid, iliac","","g"],["Medium-sized muscular arteries","coronaries, popliteal","","g"]]},
+   {rt:"Why it is so deadly",it:[["Prime targets: vital arteries","coronaries, cerebral arteries, the aorta"],["→","responsible for"],["Roughly half of all deaths","more deaths and serious complications than any other disorder","","w"]]},
+   {rt:"Major consequences",it:[["Atherosclerosis","","","r"],["→",""],["1. Myocardial infarction","alone ~25% of all deaths","","w"],["2. Cerebral infarction","","","w"],["3. Aortic aneurysm","","","w"]]}]},
+
+ {t:"Risk Factors for Atherosclerosis",ty:"Classification tree",src:"Risk factor",kind:"tree",
+  root:T("Risk factors","Two groups: nonmodifiable (constitutional) and modifiable.",[
+   T("Nonmodifiable (constitutional)","",[T("Genetic abnormalities",""),T("Family history",""),T("Increase age",""),T("Male gender","")],"g"),
+   T("Modifiable","",[T("Hyperlipidemia",""),T("Hypertension",""),T("Cigarette smoking",""),T("Diabetes",""),T("Inflammation","")],"g")],"r")},
+
+ {t:"Theories of Atherogenesis",ty:"Concept map",src:"Pathogenesis of atherosclerosis",kind:"chains",
+  rows:[
+   {rt:"Two historical dominant theories",it:[["First theory","intimal cellular proliferation","<p>An intimal cellular proliferation in response to endothelial injury.</p>","g"],["Other theory","thrombi","<p>Focusing on repeated formation and organization of thrombi.</p>","g"]]},
+   {rt:"Combined into the most widely accepted theory",it:[["Both theories + risk factors"],["→","incorporated and integrated by"],["Response to injury hypothesis","","<p>The most widely accepted theory of pathogenesis.</p>","r"]]},
+   {rt:"What the theory states",it:[["Endothelial injury"],["→","provokes"],["Chronic inflammatory and healing response of the arterial wall","= atherosclerosis","","o"]]}]},
+
+ {t:"Response to Injury Model: What Atherosclerosis Results From",ty:"Process flowchart",src:"According to this model, atherosclerosis results from the following",kind:"chains",
+  rows:[
+   {rt:"Endothelium",it:[["Endothelial injury","","<p>Endothelial cell injury is the cornerstone of the response to injury hypothesis.</p>","r"],["→","resultant"],["Endothelial dysfunction"],["→","leading to"],["Increased permeability · leukocyte adhesion · thrombosis","","","w"]]},
+   {rt:"Lipids and platelets",it:[["Accumulation of lipoproteins","mainly oxidized LDL and cholesterol crystals","<p>In the vessel wall.</p>"],["Platelet adhesion"]]},
+   {rt:"Monocytes",it:[["Monocyte adhesion","to the endothelium"],["→",""],["Migration","into the intima"],["→","differentiation into"],["Macrophages and foam cells","","","g"]]},
+   {it:[["Lipid accumulation within macrophages"],["→","release"],["Inflammatory cytokines","","","w"]]},
+   {rt:"Smooth muscle cells",it:[["Factors from activated platelets, macrophages, and vascular wall cells"],["→","cause"],["Smooth muscle cell recruitment"],["→",""],["SMC proliferation and ECM production","","","o"]]},
+   {rt:"Figure: atherosclerosis progression",it:[["LDL","lumen"],["→",""],["m-LDL","↑ SMase; SM → Cer"],["→",""],["Aggregation"],["→","taken up by macrophages (from monocytes)"],["Foam cells"],["→",""],["Plaque formation","stenosis","","o"]]}]},
+
+ {t:"Endothelial Injury: Causes and Triggers",ty:"Classification tree",src:"1. Endothelial Injury; the most important causes of endothelial injury",kind:"tree",
+  root:T("Endothelial injury","<p>Endothelial cell injury is the cornerstone of the response to injury hypothesis.</p><p>Endothelial cell loss due to any kind of injury.</p>",[
+   T("Most important causes","",[T("Hemodynamic disturbances",""),T("Hypercholesterolemia",""),T("Inflammation","")],"g"),
+   T("Suspected triggers of early atheromatous lesions","",[T("Hypertension",""),T("Hyperlipidemia",""),T("Toxins from cigarette smoke",""),T("Homocysteine",""),T("Infectious agents","“and even infectious agents”.")],"g"),
+   T("Inflammatory cytokines","e.g., tumor necrosis factor [TNF] — also can stimulate proatherogenic patterns of endothelial cell gene expression.",[],"w"),
+   T("Figure: chronic endothelial ‘injury’","Hyperlipidemia, hypertension, smoking, homocysteine, hemodynamic factors, toxins, viruses, immune reactions.",[],"o")],"r")},
+
+ {t:"Response to Injury in Atherogenesis: Five Stages",ty:"Process flowchart",src:"Response to injury in atherogenesis (with figure)",kind:"chains",
+  rows:[
+   {rt:"Stages 1 → 3",it:[["1. Normal","","<p>Normal wall: Endothelium, Intima, Media, Adventitia.</p>","g"],["→","chronic endothelial ‘injury’"],["2. Endothelial injury","monocyte and platelet adhesion","<p>Endothelial dysfunction (e.g., increased permeability, leukocyte adhesion), monocyte adhesion and emigration.</p>","g"],["→",""],["3. Migration into the intima","monocytes and SMCs; macrophage activation","<p>Macrophage activation, smooth muscle recruitment. Figure label: fatty streak.</p>","g"]]},
+   {rt:"Stages 4 → 5",it:[["4. Uptake of modified lipids","macrophages and SMCs; further activation","<p>Macrophages and smooth muscle cells engulf lipid. Figure labels: lymphocyte; fibrofatty atheroma.</p>","g"],["→",""],["5. Well-developed plaque","intimal SMC proliferation with ECM elaboration","<p>Smooth muscle proliferation, collagen and other ECM deposition, extracellular lipid. Figure labels: lymphocyte, lipid debris, collagen.</p>","o"]]},
+   {rt:"Lesions labelled in the figure",it:[["Fatty streak","stage 3"],["→",""],["Fibrofatty atheroma","stage 4"],["→",""],["Collagen + lipid debris","stage 5","","o"]]}]}
+ ];
+ const E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+ function build(d,idx){
+  const card=E("article","dgx-card");card.style.setProperty("--z",1);
+  card.append(E("div","dgx-h",`<h3>${d.t}</h3><span class="dgx-bd">${d.ty}</span>`),E("p","dgx-src","Source: "+d.src));
+  const tb=E("div","dgx-tb"),cv=E("div","dgx-cv"),dt=E("div","dgx-dt");
+  const hint=()=>{dt.innerHTML='<p class="h">Tap any node to read its details.</p>'};
+  let sel=null,z=1;
+  const pick=(btn,title,html)=>{if(sel)sel.classList.remove("on");sel=btn;btn.classList.add("on");dt.innerHTML=`<h4>${title}</h4>`+(html?(html.startsWith("<")?html:"<p>"+html+"</p>"):"<p class='h'>No further detail in the source.</p>")};
+  const node=(label,sub,html,kind)=>{const b=E("button","dgx-n"+(kind?" "+kind:""),label+(sub?`<small>${sub}</small>`:""));b.type="button";b.onclick=()=>pick(b,label+(sub&&!sub.startsWith("<")?" — "+sub:""),html);return b};
+  const zoom=v=>{z=Math.max(.8,Math.min(1.6,+(v).toFixed(2)));card.style.setProperty("--z",z)};
+  const mk=(txt,f)=>{const b=E("button","",txt);b.type="button";b.onclick=f;tb.append(b);return b};
+  if(d.kind==="tree"){
+   const ul=E("ul","dgx-t");
+   const rec=(n,lv)=>{
+    const li=E("li");const r=E("div","dgx-nr");
+    let tgl=null;
+    if(n.c.length){tgl=E("button","dgx-tg");tgl.type="button";tgl.setAttribute("aria-label","Expand or collapse "+n.l);tgl.onclick=()=>li.classList.toggle("cl");r.append(tgl)}else r.append(E("span","dgx-sp"));
+    const b=node(n.l,"",n.d,n.k);const old=b.onclick;b.onclick=()=>{old();if(n.c.length)li.classList.remove("cl")};r.append(b);li.append(r);
+    if(n.c.length){const u=E("ul");n.c.forEach(c=>u.append(rec(c,lv+1)));li.append(u);if(lv>=1)li.classList.add("cl")}
+    return li};
+   ul.append(rec(d.root,0));cv.append(ul);
+   mk("Expand all",()=>cv.querySelectorAll("li").forEach(l=>l.classList.remove("cl")));
+   mk("Collapse all",()=>cv.querySelectorAll("li").forEach(l=>{if(l.querySelector(":scope>ul"))l.classList.add("cl")}));
+   cv.querySelector("li").classList.remove("cl");
+  }else{
+   d.rows.forEach(r=>{const row=E("div","dgx-row");if(r.rt)row.append(E("div","dgx-rt",r.rt));
+    r.it.forEach(x=>{const [a,b,c,k]=x;
+     if(a==="→"||a==="—"||a==="⇄"||a==="⇢"){row.append(E("span","dgx-ar",`<b>${a==="—"?"—":a}</b>${b?`<span>${b}</span>`:""}`))}
+     else row.append(node(a,b,c,k))});
+    cv.append(row)});
+  }
+  mk("A−",()=>zoom(z-.1));mk("A+",()=>zoom(z+.1));
+  mk("Reset",()=>{zoom(1);if(sel){sel.classList.remove("on");sel=null}hint();if(d.kind==="tree"){cv.querySelectorAll("li").forEach(l=>{if(l.querySelector(":scope>ul"))l.classList.add("cl")});cv.querySelector("li").classList.remove("cl")}cv.scrollTo(0,0)});
+  hint();
+  card.append(tb,cv,dt);return card;
+ }
+ const lg=E("div","dgx-lg",'<span><i style="background:var(--p)"></i>Main concept</span><span><i style="border-color:var(--s)"></i>Group / item</span><span><i style="border-color:var(--ok)"></i>Outcome / result</span><span><i style="border-color:var(--bad)"></i>Caution / exception</span>');
+ if(!D.length)return;
+ host.append(lg);D.forEach((d,i)=>host.append(build(d,i)));
+})();
+// ===== Mini Map (source: Cardiovascular system lecture only) =====
+(function(){
+ const host=document.getElementById("mmx-root");if(!host)return;
+ const N=(l,r,d,c)=>({l,r,d,c:c||[]});
+ const ROOT=N("Cardiovascular system","","Vascular disorders, normal vessel-wall histology, classification of arteries, and atherosclerosis (definition, risk factors, consequences, pathogenesis).",[
+  N("Vascular Disease","includes","Vascular disorders are responsible for more morbidity and mortality than any other category of human diseases.",[
+   N("Narrowing or obstruction","consists of","Narrowing (stenosis) or complete obstruction of vessel lumens.",[
+    N("Progressive","","e.g., by atherosclerosis."),N("Abrupt","","e.g., by thrombosis or embolism.")]),
+   N("Weakening of vessel walls","leads to","Weakening of vessel walls, leading to dilation or rupture.",[
+    N("Aneurysm","",""),N("Dissection","","")])]),
+  N("Normal Histology and Anatomy","includes","Basic components of the wall of blood vessels and their arrangement into three layers.",[
+   N("Basic components","consists of","1. Endothelial Cells (ECs) and smooth Muscle Cells (SMCs). 2. Extracellular Matrix (ECM).",[
+    N("ECs and SMCs","",""),N("ECM","","Extracellular Matrix.")]),
+   N("Three layers","arranged into","From lumen to outside.",[
+    N("Intima","","Single layer of endothelial cells (tunica intima)."),
+    N("Media","","Smooth muscle cells (tunica media)."),
+    N("Adventitia","","Connective tissue, Vasa Vasorum, and nerve fibers (tunica externa).")])]),
+  N("Classification of Arteries","classified into","According to their size & structure.",[
+   N("Large / elastic arteries","","Aorta; major branches of the aorta (subclavian, common carotid, iliac); pulmonary arteries.",[
+    N("Media","","Elastic fiber-rich media: lamellar units of elastin fibers and SMCs like tree rings.")]),
+   N("Medium-sized / muscular arteries","","Smaller branches of the aorta (e.g., coronary and renal arteries).",[
+    N("Media","","Composed predominantly of SMC.")]),
+   N("Small arteries and arterioles","","Small arteries ≤2 mm in diameter; arterioles 20 to 100 µm in diameter; within tissues and organs.",[
+    N("Media","","Smooth muscles; their contraction changes diameter and regulates systemic arterial blood pressure."),
+    N("Physiologic resistance","","Arterioles are the principal points of physiologic resistance (control the blood pressure).")])]),
+  N("Atherosclerosis","includes","Thickening or hardening of the arteries caused by a buildup of atheromatous plaque (atheroma) in the inner lining of an artery.",[
+   N("Importance","","More deaths and serious complications than any other disorder (roughly half of all deaths), because its prime targets are vital arteries: the coronaries, cerebral arteries, the aorta."),
+   N("Arteries affected","","Primarily large elastic arteries and medium-sized muscular arteries.",[
+    N("Large elastic","","Aorta, carotid, and the iliac arteries."),N("Medium-sized muscular","","Coronaries and popliteal arteries.")]),
+   N("Atheromatous plaque","consists of","Raised lesions.",[
+    N("Lipid core","","Soft grumous lipid core: mainly cholesterol and cholesterol esters, with necrotic debris."),N("Fibrous cap","","Covers the lipid core.")]),
+   N("Major consequences","leads to","",[
+    N("Myocardial infarction","","Alone responsible for about 25% of all deaths."),N("Cerebral infarction","",""),N("Aortic aneurysm","","")])]),
+  N("Risk Factors","classified into","Nonmodifiable (constitutional) and modifiable.",[
+   N("Nonmodifiable (constitutional)","","Genetic abnormalities, family history, increase age, male gender."),
+   N("Modifiable","","Hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation.")]),
+  N("Pathogenesis","includes","Theories regarding atherogenesis.",[
+   N("Historical theories","","Two dominant theories.",[
+    N("First theory","","Intimal cellular proliferation in response to endothelial injury."),N("Other theory","","Repeated formation and organization of thrombi.")]),
+   N("Response to injury hypothesis","","Most widely accepted theory; incorporates elements of both theories and integrates the risk factors. Atherosclerosis is a chronic inflammatory and healing response of the arterial wall to endothelial injury.",[
+    N("Endothelial injury / dysfunction","leads to","Increased permeability, leukocyte adhesion, and thrombosis."),
+    N("Lipoprotein accumulation","","Mainly oxidized LDL and cholesterol crystals in the vessel wall."),
+    N("Platelet adhesion","",""),
+    N("Monocytes","results in","Adhesion to the endothelium, migration into the intima, differentiation into macrophages and foam cells."),
+    N("Lipid in macrophages","results in","Release of inflammatory cytokines."),
+    N("SMC recruitment","","Due to factors released from activated platelets, macrophages, and vascular wall cells."),
+    N("SMC proliferation and ECM production","","")])]),
+  N("Endothelial Injury","includes","Endothelial cell injury is the cornerstone of the response to injury hypothesis; endothelial cell loss due to any kind of injury.",[
+   N("Suspected triggers","","Hypertension, hyperlipidemia, toxins from cigarette smoke, homocysteine, and even infectious agents."),
+   N("Inflammatory cytokines","","e.g., tumor necrosis factor [TNF]; can stimulate proatherogenic patterns of endothelial cell gene expression."),
+   N("Most important causes","","Hemodynamic disturbances, hypercholesterolemia, inflammation.")]),
+  N("Stages of Atherogenesis","includes","Response to injury in atherogenesis.",[
+   N("1. Normal","",""),
+   N("2. Endothelial injury","occurs before 3","With monocyte and platelet adhesion."),
+   N("3. Migration","occurs before 4","Monocyte and smooth muscle cell migration into the intima, with macrophage activation (figure: fatty streak)."),
+   N("4. Lipid uptake","occurs before 5","Macrophage and smooth muscle cell uptake of modified lipids and further activation (figure: fibrofatty atheroma)."),
+   N("5. Well-developed plaque","","Intimal smooth muscle cell proliferation with ECM elaboration.")])
+ ]);
+ const E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+ const card=E("div","mmx-card"),tb=E("div","mmx-tb"),cv=E("div","mmx-cv"),dt=E("div","mmx-dt");
+ card.style.setProperty("--z",1);
+ let sel=null,z=1;
+ const hint=()=>{dt.innerHTML='<p class="h">Tap any node to read its details. Use the arrows to open or close a branch.</p>'};
+ function rec(n,lv,path){
+  const li=E("li"),r=E("div","mmx-r");
+  if(n.c.length){const t=E("button","mmx-tg");t.type="button";t.setAttribute("aria-label","Expand or collapse "+n.l);t.onclick=()=>li.classList.toggle("cl");r.append(t)}else r.append(E("span","mmx-sp"));
+  if(n.r)r.append(E("span","mmx-rel",n.r));
+  const b=E("button","mmx-n l"+lv,`<i>L${lv}</i><span>${n.l}</span>`);b.type="button";
+  const here=path.concat(n.l);
+  b.onclick=()=>{if(sel)sel.classList.remove("on");sel=b;b.classList.add("on");if(n.c.length)li.classList.remove("cl");
+   const kids=n.c.length?`<p class="pth">Contains: ${n.c.map(c=>c.l).join(" · ")}</p>`:"";
+   dt.innerHTML=`<h4>${n.l}</h4><p class="pth">${here.join(" › ")}</p>`+(n.d&&n.d.trim()?`<p>${n.d}</p>`:"<p class='h'>See the branches below.</p>")+kids};
+  r.append(b);li.append(r);
+  if(n.c.length){const u=E("ul");n.c.forEach(c=>u.append(rec(c,lv+1,here)));li.append(u);if(lv>=2)li.classList.add("cl")}
+  return li}
+ const ul=E("ul","mmx-t");ul.append(rec(ROOT,1,[]));cv.append(ul);
+ const all=o=>cv.querySelectorAll("li").forEach(l=>{if(l.querySelector(":scope>ul"))l.classList.toggle("cl",!o)});
+ const zoom=v=>{z=Math.max(.8,Math.min(1.6,+v.toFixed(2)));card.style.setProperty("--z",z)};
+ const mk=(t,f)=>{const b=E("button","",t);b.type="button";b.onclick=f;tb.append(b)};
+ const base=()=>{cv.querySelectorAll("li").forEach(l=>{if(l.querySelector(":scope>ul"))l.classList.add("cl")});ul.firstChild.classList.remove("cl");ul.firstChild.querySelectorAll(":scope>ul>li").forEach(l=>l.classList.remove("cl"))};
+ mk("Expand all",()=>all(true));mk("Collapse all",base);mk("A−",()=>zoom(z-.1));mk("A+",()=>zoom(z+.1));
+ mk("Reset",()=>{zoom(1);if(sel){sel.classList.remove("on");sel=null}hint();base();cv.scrollTo(0,0)});
+ base();hint();
+ const lg=E("div","mmx-lg",'<span><b>L1</b>Main lecture topic</span><span><b>L2</b>Major topic</span><span><b>L3</b>Subtopic</span><span><b>L4</b>Key detail / example</span><span><em style="color:var(--s)">dashed label</em> = relationship to the parent</span>');
+ card.append(lg,tb,cv,dt);host.append(card);
+ // key relationships
+ const REL=[["Vascular disease", "results from", "Narrowing/obstruction of vessel lumens, or weakening of vessel walls"], ["Weakening of vessel walls", "leads to", "Dilation or rupture (aneurysm, dissection)"], ["Vessel wall", "consists of", "ECs, SMCs and ECM arranged in intima, media, adventitia"], ["Arteries", "classified into", "Large (elastic), medium-sized (muscular), small arteries and arterioles"], ["Arteriolar smooth-muscle contraction", "results in", "Changes in diameter that regulate systemic arterial blood pressure"], ["Atheromatous plaque buildup", "causes", "Thickening or hardening of the arteries (atherosclerosis)"], ["Atheromatous plaque", "consists of", "Soft grumous lipid core covered by a fibrous cap"], ["Atherosclerosis", "leads to", "Myocardial infarction, cerebral infarction, aortic aneurysm"], ["Risk factors", "classified into", "Nonmodifiable (constitutional) and modifiable"], ["Response to injury hypothesis", "includes", "Elements of both historical theories + the risk factors"], ["Endothelial injury / dysfunction", "leads to", "Increased permeability, leukocyte adhesion, and thrombosis"], ["Monocytes", "differentiate into", "Macrophages and foam cells"], ["Lipid accumulation within macrophages", "results in", "Release of inflammatory cytokines"], ["Factors from activated platelets, macrophages, vascular wall cells", "cause", "Smooth muscle cell recruitment"], ["Intimal SMC proliferation with ECM elaboration", "results in", "A well-developed plaque"]];
+ host.append(E("h3","mmh","Key Relationships"));
+ host.append(E("div","sc",`<table><thead><tr><th>From</th><th>Relationship</th><th>To</th></tr></thead><tbody>${REL.map(r=>`<tr><td>${r[0]}</td><td class="rl">${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table>`));
+})();
+// ===== Flash Cards (source: Cardiovascular system lecture only) =====
+(function(){
+ const host=document.getElementById("fcx-root");if(!host)return;
+ const L=[["Easy", [["What category of human diseases causes the most morbidity and mortality according to the lecture?", "Vascular disorders.", "Vascular disorders are responsible for more morbidity and mortality than any other category of human diseases."], ["How many principal mechanisms underlie vascular disease?", "Two.", "(1) Narrowing or complete obstruction of vessel lumens; (2) weakening of vessel walls."], ["What is the first principal mechanism of vascular disease?", "Narrowing (stenosis) or complete obstruction of vessel lumens.", "It may occur progressively or abruptly."], ["Give the lecture's example of progressive narrowing of a vessel lumen.", "Atherosclerosis.", "Progressive narrowing, e.g., by atherosclerosis."], ["Give the lecture's examples of abrupt obstruction of a vessel lumen.", "Thrombosis or embolism.", "Abrupt narrowing/obstruction, e.g., by thrombosis or embolism."], ["What does weakening of vessel walls lead to?", "Dilation or rupture (aneurysm, dissection).", "This is the second principal mechanism of vascular disease."], ["What are the basic cellular components of the blood-vessel wall?", "Endothelial cells (ECs) and smooth muscle cells (SMCs).", "The other basic component is the extracellular matrix (ECM)."], ["What non-cellular component forms part of the vessel wall?", "Extracellular matrix (ECM).", "Components: 1. ECs and SMCs; 2. ECM."], ["Name the three layers of the vessel wall from lumen to outside.", "Intima, media, adventitia.", "The components of the wall are arranged into these three layers."], ["What does the intima consist of?", "A single layer of endothelial cells.", "Intima = innermost layer (tunica intima)."], ["What does the media consist of?", "Smooth muscle cells.", "Media = middle layer (tunica media)."], ["What does the adventitia consist of?", "Connective tissue, vasa vasorum, and nerve fibers.", "Adventitia = outermost layer (tunica externa in the figure)."], ["Name the three classes of arteries by size and structure.", "Large (elastic) arteries; medium-sized (muscular) arteries; small arteries and arterioles.", "Arteries are classified according to their size & structure."], ["Which vessels are large or elastic arteries?", "The aorta, the major branches of the aorta (subclavian, common carotid, and iliac), and pulmonary arteries.", "Class (1) of arteries."], ["Give two examples of medium-sized (muscular) arteries.", "Coronary and renal arteries.", "They are smaller branches of the aorta."], ["What is the diameter of small arteries?", "≤2 mm.", "Small arteries lie within tissues and organs."], ["What is the diameter range of arterioles?", "20 to 100 µm.", "Arterioles lie within tissues and organs."], ["Define atherosclerosis.", "Thickening or hardening of the arteries caused by a buildup of atheromatous plaque (atheroma) in the inner lining of an artery.", "Definition from the Atherosclerosis slide."], ["What fraction of all deaths is atherosclerosis roughly responsible for?", "Roughly half of all deaths.", "It causes more deaths and serious complications than any other disorder."], ["What covers the lipid core of an atheromatous plaque?", "A fibrous cap.", "Plaques = soft grumous lipid cores covered by fibrous caps."], ["List the three major consequences of atherosclerosis.", "Myocardial infarction, cerebral infarction, aortic aneurysm.", "Its major consequences, in the order given in the lecture."], ["List the nonmodifiable (constitutional) risk factors.", "Genetic abnormalities, family history, increase age, male gender.", "Risk factor slide."], ["List the modifiable risk factors.", "Hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation.", "Risk factor slide."], ["What is the most widely accepted theory of the pathogenesis of atherosclerosis?", "The response to injury hypothesis.", "It incorporates elements of both historical theories and integrates the risk factors."], ["What are the three most important causes of endothelial injury?", "Hemodynamic disturbances, hypercholesterolemia, inflammation.", "Slide: The most important causes of endothelial injury."]]], ["Medium", [["Contrast the media of elastic and muscular arteries.", "Elastic arteries: elastic fiber-rich media (lamellar units of elastin fibers and SMCs like tree rings). Muscular arteries: media composed predominantly of SMC.", "Classification of arteries according to size & structure."], ["How do small arteries and arterioles regulate blood pressure?", "Contraction of the smooth muscle in their media changes their diameter, which regulates systemic arterial blood pressure.", "Hence arterioles are the main points of physiologic resistance."], ["Why are arterioles described as the principal points of physiologic resistance?", "Because their smooth-muscle contraction changes their diameter, controlling the blood pressure.", "Small arteries and arterioles section."], ["Why is atherosclerosis responsible for more deaths than any other disorder?", "Its prime targets are vital arteries: the coronaries, cerebral arteries, the aorta.", "This explains roughly half of all deaths."], ["Which arteries does atherosclerosis primarily affect?", "Large elastic arteries (aorta, carotid, iliac) and medium-sized muscular arteries (coronaries and popliteal arteries).", "Atherosclerosis is “a disease primarily of large elastic … and medium-sized muscular arteries”."], ["Describe the lipid core of an atheromatous plaque.", "Soft and grumous; mainly cholesterol and cholesterol esters, with necrotic debris.", "Atheromatous plaques are raised lesions with this core covered by a fibrous cap."], ["How much of all deaths does myocardial infarction account for on its own?", "About 25% of all deaths.", "Myocardial infarction is the first listed major consequence of atherosclerosis."], ["What were the two historical dominant theories of atherogenesis?", "(1) Intimal cellular proliferation in response to endothelial injury; (2) repeated formation and organization of thrombi.", "The response to injury hypothesis incorporates elements of both."], ["According to the response to injury hypothesis, what is atherosclerosis?", "A chronic inflammatory and healing response of the arterial wall to endothelial injury.", "This is what the theory states."], ["What does endothelial dysfunction lead to in the response to injury model?", "Increased permeability, leukocyte adhesion, and thrombosis.", "Endothelial injury → resultant endothelial dysfunction."], ["Which lipoproteins mainly accumulate in the vessel wall in atherogenesis?", "Mainly oxidized LDL and cholesterol crystals.", "Accumulation of lipoproteins in the vessel wall."], ["What happens to monocytes in the response to injury model?", "They adhere to the endothelium, migrate into the intima, and differentiate into macrophages and foam cells.", "One of the processes atherosclerosis results from."], ["What do macrophages release after accumulating lipid?", "Inflammatory cytokines.", "Lipid accumulation within macrophages, which release inflammatory cytokines."], ["What causes smooth muscle cell recruitment in atherogenesis?", "Factors released from activated platelets, macrophages, and vascular wall cells.", "Followed by smooth muscle cell proliferation and ECM production."], ["List the suspected triggers of early atheromatous lesions.", "Hypertension, hyperlipidemia, toxins from cigarette smoke, homocysteine, and even infectious agents.", "Endothelial injury section."]]], ["Hard", [["Why does the response to injury hypothesis supersede the two historical theories?", "It incorporates elements of both theories (intimal proliferation after endothelial injury and thrombus organization) and also integrates the risk factors.", "That is why it is the most widely accepted theory."], ["A patient's coronary artery is narrowing slowly over years, while another artery is suddenly blocked by an embolus. How does the lecture classify both?", "Both are mechanism 1 (narrowing/obstruction of vessel lumens): the first is progressive (e.g., atherosclerosis), the second abrupt (e.g., embolism).", "Mechanism 2 would instead be wall weakening (aneurysm, dissection)."], ["Atherosclerosis causes narrowing, yet one of its major consequences is aortic aneurysm. Which two vascular mechanisms does this connect?", "Narrowing/obstruction of lumens (atherosclerosis) and weakening of vessel walls (aneurysm).", "Aneurysm is the lecture's example of wall weakening; aortic aneurysm is a listed consequence of atherosclerosis."], ["The aorta, carotid and iliac arteries are frequent atherosclerosis sites. Which artery class are they and what is their media like?", "Large (elastic) arteries; elastic fiber-rich media of lamellar units of elastin fibers and SMCs like tree rings.", "Atherosclerosis primarily affects large elastic and medium-sized muscular arteries."], ["The coronary arteries appear in two classification contexts in the lecture. What are they?", "Medium-sized (muscular) arteries, and a prime vital target of atherosclerosis (coronaries).", "Their media is predominantly SMC; coronary involvement → myocardial infarction (~25% of deaths)."], ["Hyperlipidemia appears in three lists in the lecture. Which ones?", "Modifiable risk factors; suspected triggers of early atheromatous lesions; and the figure's causes of chronic endothelial ‘injury’.", "Closely related: hypercholesterolemia is one of the most important causes of endothelial injury."], ["Trace monocytes from the blood to foam cells.", "Adhesion to the endothelium → migration into the intima → differentiation into macrophages → lipid accumulation (foam cells).", "Macrophages with lipid also release inflammatory cytokines."], ["Order the five stages of the response to injury in atherogenesis.", "1 Normal → 2 Endothelial injury with monocyte and platelet adhesion → 3 Monocyte and SMC migration into the intima with macrophage activation → 4 Macrophage and SMC uptake of modified lipids → 5 Intimal SMC proliferation with ECM elaboration (well-developed plaque).", "Response to injury in atherogenesis."], ["In the stage figure, which lesion corresponds to stage 3 and which to stage 4?", "Stage 3: fatty streak. Stage 4: fibrofatty atheroma.", "Stage 5 shows collagen and other ECM deposition with lipid debris."], ["Which cells contribute both to recruiting SMCs and to the earlier stages of injury?", "Activated platelets and macrophages (with vascular wall cells) release factors that recruit SMCs; platelets adhere in stage 2 and macrophages are activated in stage 3.", "Integrates the model's processes with its staged sequence."]]]];
+ const E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+ const lv=E("div","fcx-lv"),pr=E("div","fcx-pr"),bar=E("div","fcx-bar","<i></i>"),sc=E("div","fcx-sc");
+ sc.tabIndex=0;sc.setAttribute("role","button");
+ const fa=E("div","fcx-fa"),fb=E("div","fcx-fb");sc.append(E("div","fcx-in"));sc.firstChild.append(fa,fb);
+ const bt=E("div","fcx-bt");
+ const mk=(t,c)=>{const b=E("button","fcx-b"+(c?" "+c:""),t);b.type="button";bt.append(b);return b};
+ const bp=mk("← Previous","g"),bf=mk("Flip card"),bn=mk("Next →","g"),bs=mk("Shuffle","g");
+ let li=0,deck=[],i=0;
+ L.forEach((l,k)=>{const b=E("button","fcx-lb"+(k?"":" on"),`<b>${l[0]}</b><span>${l[1].length} cards</span>`);b.type="button";b.onclick=()=>{li=k;lv.querySelectorAll(".fcx-lb").forEach((x,j)=>x.classList.toggle("on",j===k));load()};lv.append(b)});
+ function load(){deck=L[li][1].slice();i=0;draw()}
+ function draw(){
+  const c=deck[i];sc.classList.remove("f");
+  fa.innerHTML=`<small>${L[li][0]} · Question</small><span></span><em>Tap the card or press “Flip card” to see the answer</em>`;fa.querySelector("span").textContent=c[0];
+  fb.innerHTML="";const add=(t,x,cl)=>{fb.append(E("div","fcx-tg",t));const d=E("div",cl,"");d.textContent=x;fb.append(d)};add("Answer",c[1],"a");add("Explanation",c[2],"x");
+  fa.setAttribute("aria-hidden","false");fb.setAttribute("aria-hidden","true");
+  pr.innerHTML=`<b>${L[li][0]}: card ${i+1} of ${deck.length}</b><span>${Math.round((i+1)/deck.length*100)}%</span>`;bar.firstChild.style.width=(i+1)/deck.length*100+"%";
+  bf.textContent="Flip card";sc.setAttribute("aria-label","Flash card "+(i+1)+" of "+deck.length+". Showing the question. Press to reveal the answer.");
+  bp.disabled=i===0;bn.disabled=i===deck.length-1;
+ }
+ function flip(){const f=sc.classList.toggle("f");fa.setAttribute("aria-hidden",String(f));fb.setAttribute("aria-hidden",String(!f));bf.textContent=f?"Show question":"Flip card";sc.setAttribute("aria-label",f?"Showing the answer and explanation. Press to return to the question.":"Showing the question. Press to reveal the answer.")}
+ sc.onclick=flip;bf.onclick=flip;
+ sc.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip()}else if(e.key==="ArrowRight"&&i<deck.length-1){i++;draw()}else if(e.key==="ArrowLeft"&&i>0){i--;draw()}};
+ bn.onclick=()=>{if(i<deck.length-1){i++;draw()}};bp.onclick=()=>{if(i>0){i--;draw()}};
+ bs.onclick=()=>{for(let k=deck.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[deck[k],deck[j]]=[deck[j],deck[k]]}i=0;draw()};
+ host.append(lv,pr,bar,sc,bt);load();
+ window.__fcCounts=L.map(l=>l[1].length);
+})();
+// ===== Quiz Bank (source: Cardiovascular system lecture only) =====
+(function(){
+ const host=document.getElementById("qzx-root");if(!host)return;
+ const L=[["Easy", [["Vascular disorders are responsible for:", ["More morbidity and mortality than any other category of human diseases", "Only complications in elderly patients", "Mainly morbidity but little mortality", "Less mortality than infectious diseases"], 0, "Stated on the introductory slide."], ["How many principal mechanisms underlie vascular disease?", ["Two", "One", "Three", "Four"], 0, "Narrowing/obstruction of lumens and weakening of vessel walls."], ["Abrupt narrowing or obstruction of a vessel lumen is exemplified by:", ["Atherosclerosis", "Dissection", "Thrombosis or embolism", "Aneurysm"], 2, "Progressive = atherosclerosis; abrupt = thrombosis or embolism."], ["Weakening of vessel walls leads to:", ["Dilation or rupture", "Thrombosis", "Embolism", "Stenosis"], 0, "Examples: aneurysm, dissection."], ["Which is an example of vessel-wall weakening?", ["Embolism", "Dissection", "Thrombosis", "Stenosis"], 1, "Weakening → dilation or rupture (aneurysm, dissection)."], ["The intima consists of:", ["A single layer of endothelial cells", "Elastic lamellae and SMCs", "Smooth muscle cells", "Connective tissue and nerve fibers"], 0, "Intima = single layer of endothelial cells."], ["The media of the vessel wall consists of:", ["Connective tissue only", "Smooth muscle cells", "Vasa vasorum", "A single layer of endothelial cells"], 1, "Media = smooth muscle cells."], ["Vasa vasorum are found in which layer?", ["Intima", "Media", "Adventitia", "Endothelium"], 2, "Adventitia: connective tissue, vasa vasorum, and nerve fibers."], ["The correct order of vessel-wall layers from lumen to outside is:", ["Media → intima → adventitia", "Adventitia → media → intima", "Intima → media → adventitia", "Intima → adventitia → media"], 2, "Layers are listed from lumen to outside."], ["Which is one of the two basic component groups of the vessel wall?", ["Red blood cells", "Extracellular matrix (ECM)", "Platelets", "Foam cells"], 1, "Components: (1) ECs and SMCs; (2) ECM."], ["Which artery is a large (elastic) artery?", ["Arteriole", "Coronary", "Renal", "Common carotid"], 3, "Elastic arteries: aorta, subclavian, common carotid, iliac, pulmonary."], ["Coronary and renal arteries are classified as:", ["Large (elastic) arteries", "Medium-sized (muscular) arteries", "Small arteries", "Arterioles"], 1, "They are smaller branches of the aorta."], ["The diameter of small arteries is:", ["≤2 mm", "≥5 mm", "20 to 100 µm", "2 to 5 mm"], 0, "Small arteries ≤2 mm; arterioles 20–100 µm."], ["The diameter of arterioles is:", ["100 to 500 µm", "≤2 mm", "1 to 10 µm", "20 to 100 µm"], 3, "Arterioles: 20 to 100 µm in diameter."], ["Atherosclerosis is caused by a buildup of atheromatous plaque in the:", ["Inner lining of an artery", "Adventitia", "Vasa vasorum", "Outer elastic membrane"], 0, "Definition of atherosclerosis."], ["Atherosclerosis is responsible for roughly what proportion of all deaths?", ["Three quarters", "One tenth", "One quarter", "Half"], 3, "Roughly half of all deaths."], ["Which of these is a prime target of atherosclerosis named in the lecture?", ["Arterioles", "Cerebral arteries", "Pulmonary capillaries", "Renal veins"], 1, "Prime targets: coronaries, cerebral arteries, the aorta."], ["The lipid core of an atheromatous plaque is mainly:", ["Triglycerides and phospholipids", "Calcium salts", "Cholesterol and cholesterol esters", "Collagen and elastin"], 2, "With necrotic debris; covered by a fibrous cap."], ["Atheromatous plaques are covered by:", ["Smooth muscle rings", "Elastic membranes", "Endothelial lamellae", "Fibrous caps"], 3, "Lipid cores covered by fibrous caps."], ["Which is NOT listed as a major consequence of atherosclerosis?", ["Cerebral infarction", "Myocardial infarction", "Pulmonary embolism", "Aortic aneurysm"], 2, "The three consequences: MI, cerebral infarction, aortic aneurysm."], ["Which risk factor is nonmodifiable (constitutional)?", ["Hypertension", "Diabetes", "Cigarette smoking", "Family history"], 3, "Nonmodifiable: genetic abnormalities, family history, increase age, male gender."], ["Which risk factor is modifiable?", ["Genetic abnormalities", "Hyperlipidemia", "Male gender", "Increase age"], 1, "Modifiable: hyperlipidemia, hypertension, cigarette smoking, diabetes, inflammation."], ["The most widely accepted theory of atherosclerosis pathogenesis is the:", ["Monoclonal hypothesis", "Thrombogenic hypothesis only", "Lipid infiltration-only theory", "Response to injury hypothesis"], 3, "Stated on the pathogenesis slide."], ["Which is one of the most important causes of endothelial injury?", ["Hemodynamic disturbances", "Male gender", "Family history", "Vasa vasorum"], 0, "Causes: hemodynamic disturbances, hypercholesterolemia, inflammation."], ["What is the first stage of the response to injury in atherogenesis?", ["Endothelial injury", "Plaque formation", "Normal", "Macrophage activation"], 2, "Stage 1 = Normal."]]], ["Medium", [["The media of large elastic arteries is described as:", ["Composed predominantly of SMC", "Elastic fiber-rich, in lamellar units of elastin fibers and SMCs like tree rings", "Connective tissue with nerve fibers", "A single layer of endothelial cells"], 1, "Class (1): large or elastic arteries."], ["Why are arterioles the principal points of physiologic resistance?", ["They are rich in elastic lamellae", "Their smooth-muscle contraction changes their diameter, regulating blood pressure", "Their intima has multiple layers of endothelium", "They have the thickest adventitia"], 1, "Their contraction causes changes in diameter that regulate systemic arterial blood pressure."], ["Atherosclerosis causes more deaths than any other disorder because:", ["It only affects arterioles", "It is always abrupt", "Its prime targets are vital arteries", "It affects veins more than arteries"], 2, "Coronaries, cerebral arteries, the aorta."], ["Atherosclerosis is primarily a disease of:", ["Small arteries only", "Arterioles and capillaries", "Large elastic and medium-sized muscular arteries", "Veins and venules"], 2, "Aorta, carotid, iliac; coronaries and popliteal."], ["The popliteal artery, in the context of atherosclerosis, is listed as a:", ["Large elastic artery", "Arteriole", "Small artery", "Medium-sized muscular artery"], 3, "Medium-sized muscular arteries: coronaries and popliteal arteries."], ["Myocardial infarction alone accounts for about what percentage of all deaths?", ["25%", "50%", "10%", "75%"], 0, "MI ≈ 25% of all deaths; atherosclerosis ≈ half."], ["Which pair correctly matches risk factors to their group?", ["Hypertension — nonmodifiable; genetic abnormalities — modifiable", "Male gender — nonmodifiable; inflammation — modifiable", "Increase age — modifiable; smoking — nonmodifiable", "Diabetes — nonmodifiable; family history — modifiable"], 1, "See the risk factor slide."], ["One historical theory of atherogenesis focused on:", ["Rupture of vasa vasorum", "Calcification of the adventitia", "Arteriolar contraction", "Repeated formation and organization of thrombi"], 3, "The other focused on intimal cellular proliferation in response to endothelial injury."], ["The response to injury hypothesis states that atherosclerosis is a:", ["Chronic inflammatory and healing response of the arterial wall to endothelial injury", "Acute infection of the arterial media", "Purely genetic degeneration of the adventitia", "Primary tumor of smooth muscle cells"], 0, "What the theory states."], ["Endothelial dysfunction leads to all of these EXCEPT:", ["Thrombosis", "Decreased permeability", "Leukocyte adhesion", "Increased permeability"], 1, "It leads to increased permeability, leukocyte adhesion, and thrombosis."], ["Which lipoproteins mainly accumulate in the vessel wall in atherogenesis?", ["HDL and triglycerides", "Free fatty acids", "Oxidized LDL and cholesterol crystals", "Chylomicrons only"], 2, "Accumulation of lipoproteins (mainly oxidized LDL and cholesterol crystals)."], ["Monocytes in atherogenesis differentiate into:", ["Smooth muscle cells", "Platelets", "Macrophages and foam cells", "Endothelial cells"], 2, "After adhesion and migration into the intima."], ["Smooth muscle cell recruitment is due to factors released from:", ["Red blood cells and neutrophils", "Fibrous caps", "Adventitial nerve fibers", "Activated platelets, macrophages, and vascular wall cells"], 3, "Stated in the response-to-injury model."], ["Which is listed as a suspected trigger of early atheromatous lesions?", ["Homocysteine", "Family history", "Male gender", "Vasa vasorum"], 0, "Triggers: hypertension, hyperlipidemia, cigarette-smoke toxins, homocysteine, infectious agents."], ["Tumor necrosis factor (TNF) is given as an example of:", ["Inflammatory cytokines that can stimulate proatherogenic endothelial gene expression", "A component of the adventitia", "A plaque lipid", "A modifiable risk factor"], 0, "Endothelial injury section."]]], ["Hard", [["A patient has slow, progressive narrowing of a coronary artery. Which mechanism and cause fit the lecture?", ["Abrupt obstruction by embolism", "Narrowing of the lumen, progressively by atherosclerosis", "Wall weakening due to aneurysm", "Wall weakening due to dissection"], 1, "Progressive narrowing e.g., by atherosclerosis."], ["Aortic aneurysm as a consequence of atherosclerosis links which two concepts?", ["Atherosclerosis and weakening of vessel walls", "Thrombosis and arteriolar resistance", "Embolism and ECM production", "Arteriolar contraction and stenosis"], 0, "Aneurysm is the lecture's example of wall weakening."], ["Which statement correctly combines artery class and atherosclerosis?", ["The aorta is a large elastic artery and a prime target of atherosclerosis", "Arterioles are the main target of atherosclerosis", "The coronary arteries are elastic arteries spared by atherosclerosis", "The renal artery is listed as a prime vital target"], 0, "Aorta = elastic artery; prime targets = coronaries, cerebral arteries, aorta."], ["Why does the response to injury hypothesis integrate both historical theories?", ["It focuses only on adventitial changes", "It rejects endothelial injury entirely", "It explains atherosclerosis only by genetics", "It incorporates intimal cellular proliferation after endothelial injury and the repeated formation and organization of thrombi"], 3, "It incorporates elements of both theories and integrates the risk factors."], ["Which sequence best describes monocyte behavior in atherogenesis?", ["Foam cells → monocytes → endothelial cells", "Adhesion to endothelium → migration into intima → macrophages → foam cells", "Migration into adventitia → platelets → fibrous cap", "Differentiation into SMCs → ECM production → adhesion"], 1, "From the response-to-injury model."], ["In the five-stage sequence, what occurs immediately after endothelial injury with monocyte and platelet adhesion?", ["Monocyte and SMC migration into the intima with macrophage activation", "Macrophage and SMC uptake of modified lipids", "Intimal SMC proliferation with ECM elaboration", "Return to normal"], 0, "Stage 2 → stage 3."], ["Which stage produces a well-developed plaque?", ["Monocyte migration into the intima", "Intimal smooth muscle cell proliferation with ECM elaboration", "Endothelial injury with platelet adhesion", "Normal"], 1, "Stage 5."], ["In the stage figure, the fibrofatty atheroma is associated with:", ["The normal vessel wall", "Initial endothelial injury", "Endothelial dysfunction only", "Macrophages and smooth muscle cells engulfing lipid"], 3, "Stage 4 in the figure; the fatty streak appears at stage 3."], ["Hyperlipidemia appears both as a modifiable risk factor and as:", ["A component of the fibrous cap", "A layer of the vessel wall", "A suspected trigger of early atheromatous lesions", "A nonmodifiable risk factor"], 2, "Hypertension, hyperlipidemia, cigarette-smoke toxins, homocysteine, infectious agents."], ["Which pairing of process and result is correct according to the model?", ["Endothelial dysfunction → reduced leukocyte adhesion", "SMC proliferation → loss of ECM", "Lipid accumulation within macrophages → release of inflammatory cytokines", "Platelet adhesion → decreased permeability"], 2, "Macrophages that accumulate lipid release inflammatory cytokines."]]]];
+ const E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+ const S=L.map(l=>l[1].map(()=>({sel:null,chk:false})));
+ let li=0,i=0;
+ const lv=E("div","qzx-lv"),pr=E("div","qzx-pr"),bar=E("div","qzx-bar","<i></i>"),dots=E("div","qzx-dots"),box=E("div","");
+ host.append(lv,pr,bar,dots,box);
+ L.forEach((l,k)=>{const b=E("button","qzx-lb"+(k?"":" on"),"");b.type="button";b.onclick=()=>{li=k;i=0;render()};lv.append(b)});
+ function stats(k){const s=S[k];return{done:s.filter(x=>x.chk).length,right:s.filter((x,j)=>x.chk&&x.sel===L[k][1][j][2]).length}}
+ function render(){
+  const [name,qs]=L[li],st=S[li],q=qs[i],s=st[i],stt=stats(li);
+  lv.querySelectorAll(".qzx-lb").forEach((b,k)=>{b.classList.toggle("on",k===li);const t=stats(k);b.innerHTML=`<b>${L[k][0]}</b><span>${L[k][1].length} questions · ${t.done} answered · ${t.right} correct</span>`});
+  pr.innerHTML=`<b>${name}: question ${i+1} of ${qs.length}</b><span>Answered ${stt.done}/${qs.length} · Score ${stt.right}</span>`;
+  bar.firstChild.style.width=stt.done/qs.length*100+"%";
+  dots.innerHTML="";qs.forEach((x,j)=>{const d=E("button",(j===i?"cur ":"")+(st[j].chk?(st[j].sel===x[2]?"ok":"no"):""),String(j+1));d.type="button";d.setAttribute("aria-label","Go to question "+(j+1)+(st[j].chk?(st[j].sel===x[2]?" (correct)":" (incorrect)"):""));d.onclick=()=>{i=j;render()};dots.append(d)});
+  box.innerHTML="";
+  const card=E("div","qzx-q");card.append(E("small","",`${name} · Question ${i+1} of ${qs.length}`));const h=E("h3","");h.textContent=q[0];card.append(h);
+  const grp=E("div","");grp.setAttribute("role","radiogroup");grp.setAttribute("aria-label","Answer options");
+  q[1].forEach((o,k)=>{
+   const b=E("button","qzx-o","<b>"+"ABCD"[k]+"</b><span></span>");b.type="button";b.lastChild.textContent=o;b.setAttribute("role","radio");b.setAttribute("aria-checked",String(s.sel===k));
+   if(s.chk){b.disabled=true;if(k===q[2])b.classList.add("ok");else if(k===s.sel)b.classList.add("no")}else if(s.sel===k)b.classList.add("sel");
+   b.onclick=()=>{if(s.chk)return;s.sel=k;render()};grp.append(b)});
+  card.append(grp);
+  if(s.chk){const ok=s.sel===q[2];const fb=E("div","qzx-fb "+(ok?"ok":"no"),"");fb.setAttribute("role","status");
+   fb.innerHTML=`<p class="st">${ok?"Correct.":"Incorrect."}</p>`;
+   if(!ok){const p=E("p","","<b>Your answer:</b> ");p.append(document.createTextNode("ABCD"[s.sel]+") "+q[1][s.sel]));fb.append(p)}
+   const c=E("p","","<b>Correct answer:</b> ");c.append(document.createTextNode("ABCD"[q[2]]+") "+q[1][q[2]]));fb.append(c);
+   const x=E("p","","<b>Explanation:</b> ");x.append(document.createTextNode(q[3]));fb.append(x);card.append(fb)}
+  const bt=E("div","qzx-bt");
+  const pv=E("button","qzx-b g","← Previous");pv.type="button";pv.disabled=i===0;pv.onclick=()=>{i--;render()};
+  const ck=E("button","qzx-b",s.chk?"Answer checked":"Check answer");ck.type="button";ck.disabled=s.chk||s.sel===null;ck.onclick=()=>{s.chk=true;render()};
+  const nx=E("button","qzx-b g",i===qs.length-1?"See results":"Next →");nx.type="button";nx.onclick=()=>{if(i===qs.length-1)results();else{i++;render()}};
+  bt.append(pv,ck,nx);card.append(bt);box.append(card);
+ }
+ function results(){
+  const [name,qs]=L[li],t=stats(li);
+  box.innerHTML="";const sm=E("div","qzx-sm",`<h3>${name} results</h3><p>Score: <b>${t.right} / ${qs.length}</b> (${Math.round(t.right/qs.length*100)}%). Answered: ${t.done} of ${qs.length}.</p>${t.done<qs.length?"<p>Some questions are unanswered; use the numbered buttons to go back to them.</p>":""}`);
+  const bt=E("div","qzx-bt");
+  const rv=E("button","qzx-b g","Review questions");rv.type="button";rv.onclick=()=>{i=0;render()};
+  const rs=E("button","qzx-b","Restart "+name);rs.type="button";rs.onclick=()=>{S[li]=S[li].map(()=>({sel:null,chk:false}));i=0;render()};
+  bt.append(rv,rs);sm.append(bt);box.append(sm);
+ }
+ render();window.__qzCounts=L.map(l=>l[1].length);window.__qzData=L;
+})();
+
+// ===== Structure (interactive) =====
+(function(){
+ const r=document.getElementById("s5");if(!r)return;
+ const chips=[...r.querySelectorAll(".stx-c")],cards=[...r.querySelectorAll(".stx-card")];
+ chips.forEach(c=>c.onclick=()=>{chips.forEach(x=>{x.classList.toggle("on",x===c);x.setAttribute("aria-pressed",x===c)});cards.forEach(k=>k.hidden=!(c.dataset.g==="all"||k.dataset.g===c.dataset.g))});
+ const IDLE="Tap any dashed, highlighted part of the structure — or one of the buttons below — to see what it is.";
+ function mount(box){
+  const data=JSON.parse(box.dataset.hs),ex=box.querySelector(".stx-ex"),pl=box.querySelector(".stx-pl"),lay=box.querySelector(".hs-layer");
+  const by={};data.forEach(d=>by[d[0]]=d);
+  const rects=[...box.querySelectorAll(".hs")];let cur=null;
+  const btns=data.map(d=>{const b=document.createElement("button");b.type="button";b.className="stx-pb";b.textContent=d[1];b.dataset.h=d[0];pl.append(b);return b});
+  function idle(){ex.className="stx-ex idle";ex.textContent=IDLE}
+  function pick(id){
+   cur=(cur===id)?null:id;
+   rects.forEach(e=>e.classList.toggle("on",e.dataset.h===cur));btns.forEach(b=>{b.classList.toggle("on",b.dataset.h===cur);b.setAttribute("aria-pressed",b.dataset.h===cur)});
+   lay.classList.toggle("dim",!!cur);
+   if(!cur){idle();return}
+   const d=by[cur];ex.className="stx-ex";ex.innerHTML="";const h=document.createElement("h4"),p=document.createElement("p");h.textContent=d[1];p.textContent=d[2];ex.append(h,p);
+  }
+  rects.forEach(e=>{e.onclick=()=>pick(e.dataset.h);e.onmouseenter=()=>rects.forEach(x=>x.classList.toggle("hv",x.dataset.h===e.dataset.h));e.onmouseleave=()=>rects.forEach(x=>x.classList.remove("hv"))});
+  btns.forEach(b=>{b.onclick=()=>pick(b.dataset.h);b.onmouseenter=()=>rects.forEach(x=>x.classList.toggle("hv",x.dataset.h===b.dataset.h));b.onmouseleave=()=>rects.forEach(x=>x.classList.remove("hv"))});
+  idle();
+ }
+ cards.forEach(c=>mount(c.querySelector(".stx-int")));
+ // gentle hint pulse the first time a card scrolls into view
+ if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("pulse");io.unobserve(e.target)}}),{threshold:.4});cards.forEach(c=>io.observe(c))}
+ const ov=document.getElementById("stx-ov"),oc=document.getElementById("stx-ovc"),ot=document.getElementById("stx-ovt");let last=null;
+ const close=()=>{ov.hidden=true;oc.innerHTML="";document.body.style.overflow="";if(last)last.focus()};
+ cards.forEach(c=>c.querySelector(".stx-zb").onclick=ev=>{
+  last=ev.currentTarget;const src=c.querySelector(".stx-int"),box=document.createElement("div");box.className="stx-int";box.dataset.hs=src.dataset.hs;
+  box.innerHTML='<div class="stx-fig"><div class="stx-in"></div></div><div class="stx-ex" aria-live="polite"></div><div class="stx-pl" role="group" aria-label="Parts of this structure"></div>';
+  const s=src.querySelector("svg").cloneNode(true);s.querySelectorAll(".on,.hv").forEach(e=>e.classList.remove("on","hv"));s.querySelector(".hs-layer").classList.remove("dim");
+  s.querySelectorAll("[id]").forEach(e=>e.id="z-"+e.id);s.querySelectorAll("use").forEach(u=>{const h=u.getAttribute("xlink:href")||u.getAttribute("href");if(h){u.setAttribute("href","#z-"+h.slice(1));u.removeAttribute("xlink:href")}});s.querySelectorAll("[clip-path]").forEach(e=>e.setAttribute("clip-path",e.getAttribute("clip-path").replace("url(#","url(#z-")));
+  box.querySelector(".stx-in").append(s);oc.innerHTML="";oc.append(box);mount(box);
+  ot.textContent=c.querySelector("h3").textContent;ov.hidden=false;document.body.style.overflow="hidden";ov.querySelector(".stx-x").focus();
+ });
+ ov.querySelector(".stx-x").onclick=close;ov.onclick=e=>{if(e.target===ov)close()};
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ov.hidden)close()});
+})();
+</script></body></html>
